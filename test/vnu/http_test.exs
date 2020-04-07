@@ -11,13 +11,39 @@ defmodule Vnu.HTTPTest do
     test "does a request", %{bypass: bypass} do
       Bypass.expect(bypass, fn conn ->
         conn = Plug.Conn.fetch_query_params(conn)
-        assert Plug.Conn.get_req_header(conn, "content-type") == ["text/html"]
+        assert Plug.Conn.get_req_header(conn, "content-type") == ["text/html; charset=utf-8"]
         assert conn.query_params == %{"out" => "json"}
         Plug.Conn.resp(conn, 200, "{}")
       end)
 
       {:ok, %Response{}} =
-        HTTP.get_response("", %Config{server_url: "http://localhost:#{bypass.port}"})
+        HTTP.get_response("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
+    end
+
+    test "sets content-type for css", %{bypass: bypass} do
+      Bypass.expect(bypass, fn conn ->
+        assert Plug.Conn.get_req_header(conn, "content-type") == ["text/css; charset=utf-8"]
+        Plug.Conn.resp(conn, 200, "{}")
+      end)
+
+      {:ok, %Response{}} =
+        HTTP.get_response(
+          "",
+          Config.new!(server_url: "http://localhost:#{bypass.port}", format: :css)
+        )
+    end
+
+    test "sets content-type for svg", %{bypass: bypass} do
+      Bypass.expect(bypass, fn conn ->
+        assert Plug.Conn.get_req_header(conn, "content-type") == ["image/svg+xml; charset=utf-8"]
+        Plug.Conn.resp(conn, 200, "{}")
+      end)
+
+      {:ok, %Response{}} =
+        HTTP.get_response(
+          "",
+          Config.new!(server_url: "http://localhost:#{bypass.port}", format: :svg)
+        )
     end
 
     test "parses messages into structs", %{bypass: bypass} do
@@ -40,7 +66,7 @@ defmodule Vnu.HTTPTest do
       end)
 
       {:ok, %Response{} = response} =
-        HTTP.get_response("", %Config{server_url: "http://localhost:#{bypass.port}"})
+        HTTP.get_response("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
 
       assert Enum.count(response.messages) == 2
 
@@ -66,7 +92,7 @@ defmodule Vnu.HTTPTest do
       end)
 
       {:error, %Error{} = error} =
-        HTTP.get_response("", %Config{server_url: "http://localhost:#{bypass.port}"})
+        HTTP.get_response("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
 
       assert error.reason == :unexpected_server_response
     end
@@ -77,7 +103,7 @@ defmodule Vnu.HTTPTest do
       end)
 
       {:error, %Error{} = error} =
-        HTTP.get_response("", %Config{server_url: "http://localhost:#{bypass.port}"})
+        HTTP.get_response("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
 
       assert error.reason == :unexpected_server_response
     end

@@ -7,7 +7,14 @@ defmodule Vnu.HTTP do
   def get_response(html, config) do
     url = "#{config.server_url}?out=json"
 
-    headers = [{"Content-Type", "text/html"}]
+    content_type =
+      case config.format do
+        :html -> "text/html"
+        :css -> "text/css"
+        :svg -> "image/svg+xml"
+      end
+
+    headers = [{"Content-Type", "#{content_type}; charset=utf-8"}]
 
     case HTTPoison.post(url, html, headers) do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
@@ -23,10 +30,11 @@ defmodule Vnu.HTTP do
          )}
 
       {:error, error} ->
-        {:error, Error.new(
-          :unexpected_server_response,
-          "Could not contact the server, got error: #{inspect(error)}"
-        )}
+        {:error,
+         Error.new(
+           :unexpected_server_response,
+           "Could not contact the server, got error: #{inspect(error)}"
+         )}
     end
   end
 
