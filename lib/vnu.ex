@@ -8,13 +8,22 @@ defmodule Vnu do
 
   ## Examples
 
-      iex> Vnu.validate_html("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n</head>\n</html>", server_url: "http://localhost:8888")
+      iex> Vnu.validate_html(~S(
+      ...><!DOCTYPE html>
+      ...><html>
+      ...><head>
+      ...>  <meta charset="utf-8">
+      ...></head>
+      ...><body>
+      ...></body>
+      ...></html>
+      ...>), server_url: "http://localhost:8888")
       {:ok, %Vnu.Response{messages: [
         %Vnu.Message{
           type: :error,
           message: "Element “head” is missing a required instance of child element “title”.",
-          extract: "=\"utf-8\">\n</head>\n</htm",
-          last_line: 5,
+          extract: "=\"utf-8\">\n</head>\n<body",
+          last_line: 6,
           first_column: 1,
           last_column: 7,
           hilite_length: 7,
@@ -25,8 +34,8 @@ defmodule Vnu do
           sub_type: :warning,
           message: "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.",
           extract: "TYPE html>\n<html>\n<head",
-          first_line: 1,
-          last_line: 2,
+          first_line: 2,
+          last_line: 3,
           first_column: 16,
           last_column: 6,
           hilite_length: 7,
@@ -81,10 +90,10 @@ defmodule Vnu do
   ## Examples
 
       iex> Vnu.validate_svg(~S(
-      ...>  <svg width="5cm" height="4cm" version="1.1" xmlns="http://www.w3.org/2000/svg">
-      ...>  <desc>Rectangle</desc>
-      ...>  <rect x="0.5cm" y="0.5cm" height="1cm"/>
-      ...>  </svg>
+      ...><svg width="5cm" height="4cm" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      ...><desc>Rectangle</desc>
+      ...><rect x="0.5cm" y="0.5cm" height="1cm"/>
+      ...></svg>
       ...> ), server_url: "http://localhost:8888")
       {:ok, %Vnu.Response{messages: [
         %Vnu.Message{
@@ -94,10 +103,10 @@ defmodule Vnu do
         %Vnu.Message{
           type: :error,
           message: "SVG element “rect” is missing required attribute “width”.",
-          extract: "</desc>\n  <rect x=\"0.5cm\" y=\"0.5cm\" height=\"1cm\"/>\n  </s",
+          extract: "le</desc>\n<rect x=\"0.5cm\" y=\"0.5cm\" height=\"1cm\"/>\n</svg",
           last_line: 4,
-          first_column: 3,
-          last_column: 42,
+          first_column: 1,
+          last_column: 40,
           hilite_length: 40,
           hilite_start: 10,
         }
