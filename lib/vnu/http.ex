@@ -1,8 +1,9 @@
 defmodule Vnu.HTTP do
   @moduledoc false
 
-  alias Vnu.Error
+  alias Vnu.{Error, Message, Response}
 
+  @doc false
   def get_response(html, config) do
     url = "#{config.server_url}?out=json"
 
@@ -22,17 +23,22 @@ defmodule Vnu.HTTP do
          )}
 
       {:error, error} ->
-        Error.new(
+        {:error, Error.new(
           :unexpected_server_response,
-          "Could not contact the server, got error: #{inspect(error)} "
-        )
+          "Could not contact the server, got error: #{inspect(error)}"
+        )}
     end
   end
 
   defp parse_body(response) do
     case Jason.decode(response) do
       {:ok, json} ->
-        {:ok, json}
+        messages =
+          json
+          |> Map.get("messages", [])
+          |> Enum.map(&Message.from_http_response(&1))
+
+        {:ok, %Response{messages: messages}}
 
       {:error, _} ->
         {:error,

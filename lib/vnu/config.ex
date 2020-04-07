@@ -7,6 +7,7 @@ defmodule Vnu.Config do
 
   @defaults [server_url: "http://localhost:8888"]
 
+  @doc false
   def new(opts) when is_list(opts) do
     opts = Keyword.merge(@defaults, opts)
     server_url = Keyword.get(opts, :server_url)

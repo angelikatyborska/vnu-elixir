@@ -8,7 +8,7 @@ defmodule Vnu.Error do
           message: String.t()
         }
 
-  @spec new(atom(), String.t()) :: t()
+  @doc false
   def new(reason, message) when reason in @reasons and is_bitstring(message) do
     %__MODULE__{reason: reason, message: message}
   end
