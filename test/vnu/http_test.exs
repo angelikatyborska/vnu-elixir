@@ -1,8 +1,8 @@
 defmodule Vnu.HTTPTest do
   use ExUnit.Case
-  alias Vnu.{HTTP, Config, Error, Response, Message}
+  alias Vnu.{HTTP, Config, Error, Result, Message}
 
-  describe "get_response" do
+  describe "get_result" do
     setup do
       bypass = Bypass.open()
       {:ok, bypass: bypass}
@@ -16,8 +16,8 @@ defmodule Vnu.HTTPTest do
         Plug.Conn.resp(conn, 200, "{}")
       end)
 
-      {:ok, %Response{}} =
-        HTTP.get_response("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
+      {:ok, %Result{}} =
+        HTTP.get_result("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
     end
 
     test "sets content-type for css", %{bypass: bypass} do
@@ -26,8 +26,8 @@ defmodule Vnu.HTTPTest do
         Plug.Conn.resp(conn, 200, "{}")
       end)
 
-      {:ok, %Response{}} =
-        HTTP.get_response(
+      {:ok, %Result{}} =
+        HTTP.get_result(
           "",
           Config.new!(server_url: "http://localhost:#{bypass.port}", format: :css)
         )
@@ -39,8 +39,8 @@ defmodule Vnu.HTTPTest do
         Plug.Conn.resp(conn, 200, "{}")
       end)
 
-      {:ok, %Response{}} =
-        HTTP.get_response(
+      {:ok, %Result{}} =
+        HTTP.get_result(
           "",
           Config.new!(server_url: "http://localhost:#{bypass.port}", format: :svg)
         )
@@ -65,8 +65,8 @@ defmodule Vnu.HTTPTest do
         Plug.Conn.resp(conn, 200, Jason.encode!(body))
       end)
 
-      {:ok, %Response{} = response} =
-        HTTP.get_response("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
+      {:ok, %Result{} = response} =
+        HTTP.get_result("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
 
       assert Enum.count(response.messages) == 2
 
@@ -92,7 +92,7 @@ defmodule Vnu.HTTPTest do
       end)
 
       {:error, %Error{} = error} =
-        HTTP.get_response("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
+        HTTP.get_result("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
 
       assert error.reason == :unexpected_server_response
     end
@@ -103,7 +103,7 @@ defmodule Vnu.HTTPTest do
       end)
 
       {:error, %Error{} = error} =
-        HTTP.get_response("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
+        HTTP.get_result("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
 
       assert error.reason == :unexpected_server_response
     end

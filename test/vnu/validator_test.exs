@@ -1,6 +1,63 @@
 defmodule Vnu.ValidatorTest do
   use ExUnit.Case
-  alias Vnu.{Validator, Error, Response}
+  alias Vnu.{Validator, Error, Result, Message}
+
+  describe "valid?" do
+    test "only messages of type info are expected" do
+      assert Validator.valid?(%Result{messages: []})
+      assert Validator.valid?(%Result{messages: [%Message{type: :info}]})
+
+      assert Validator.valid?(%Result{
+               messages: [%Message{type: :info}, %Message{type: :info, sub_type: :warning}]
+             })
+
+      refute Validator.valid?(%Result{
+               messages: [%Message{type: :error}]
+             })
+
+      refute Validator.valid?(%Result{
+               messages: [%Message{type: :unknown_type}]
+             })
+
+      refute Validator.valid?(%Result{
+               messages: [%Message{type: :info}, %Message{type: :error}]
+             })
+    end
+
+    test "can treat warnings as errors" do
+      assert Validator.valid?(%Result{messages: []}, warnings_as_errors: true)
+
+      assert Validator.valid?(%Result{messages: [%Message{type: :info}]}, warnings_as_errors: true)
+
+      refute Validator.valid?(
+               %Result{
+                 messages: [%Message{type: :info}, %Message{type: :info, sub_type: :warning}]
+               },
+               warnings_as_errors: true
+             )
+
+      refute Validator.valid?(
+               %Result{
+                 messages: [%Message{type: :error}]
+               },
+               warnings_as_errors: true
+             )
+
+      refute Validator.valid?(
+               %Result{
+                 messages: [%Message{type: :unknown_type}]
+               },
+               warnings_as_errors: true
+             )
+
+      refute Validator.valid?(
+               %Result{
+                 messages: [%Message{type: :info}, %Message{type: :error}]
+               },
+               warnings_as_errors: true
+             )
+    end
+  end
 
   describe "validate" do
     setup do
@@ -20,7 +77,7 @@ defmodule Vnu.ValidatorTest do
         Plug.Conn.resp(conn, 200, Jason.encode!(body))
       end)
 
-      {:ok, %Response{messages: [message1, message2]}} =
+      {:ok, %Result{messages: [message1, message2]}} =
         Validator.validate("", server_url: "http://localhost:#{bypass.port}")
 
       assert message1.type == :info

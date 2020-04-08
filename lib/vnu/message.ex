@@ -1,4 +1,18 @@
 defmodule Vnu.Message do
+  @moduledoc """
+    A message is a unit of information returned by the Checker.
+    See [its documentation](https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#media-type) for detailed up to date information about its output format.
+
+    ## Fields
+
+    - `:type` - One of `:error`, `:info`, or `:non_document_error`. Info messages can either be general information or warnings, see `:sub_type`.
+        Non-document errors signify errors with the Checker server itself, and are treated internally by this library as if the validation could not be run at all.
+    - `:sub_type` - For messages of type `:error` it could be  `nil` or `:fatal`. For messages of type `:info`, it could be `nil` or `:warning`.
+    - `:message` - The detailed description of the issue.
+    - `:extract` - The snippet of the document that the message is about.
+    -  `:first_line`, `:last_line`, `:first_column`, `:last_column` - The position of the part of the document the message is about relative to the whole document.
+        Lines and columns are numbered from 1.
+  """
   defstruct([
     :type,
     :sub_type,

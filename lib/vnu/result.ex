@@ -1,4 +1,4 @@
-defmodule Vnu.Response do
+defmodule Vnu.Result do
   defstruct messages: []
 
   alias Vnu.Message

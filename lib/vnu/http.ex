@@ -1,10 +1,10 @@
 defmodule Vnu.HTTP do
   @moduledoc false
 
-  alias Vnu.{Error, Message, Response}
+  alias Vnu.{Error, Message, Result}
 
   @doc false
-  def get_response(html, config) do
+  def get_result(html, config) do
     url = "#{config.server_url}?out=json"
 
     content_type =
@@ -46,7 +46,7 @@ defmodule Vnu.HTTP do
           |> Map.get("messages", [])
           |> Enum.map(&Message.from_http_response(&1))
 
-        {:ok, %Response{messages: messages}}
+        {:ok, %Result{messages: messages}}
 
       {:error, _} ->
         {:error,
