@@ -29,7 +29,7 @@ defmodule Vnu.Message do
 
   @doc false
   def from_http_response(map) do
-    %__MODULE__{
+    message = %__MODULE__{
       type: get_type(map),
       sub_type: get_sub_type(map),
       message: get_string(map, "message"),
@@ -42,6 +42,12 @@ defmodule Vnu.Message do
       hilite_start: get_integer(map, "hiliteStart"),
       hilite_length: get_integer(map, "hiliteLength")
     }
+
+    if message.last_line && !message.first_line do
+      %{message | first_line: message.last_line}
+    else
+      message
+    end
   end
 
   defp get_type(map) do
