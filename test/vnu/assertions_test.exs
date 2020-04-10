@@ -43,8 +43,9 @@ defmodule Vnu.AssertionsTest do
                    "Expected the HTML document to be valid, but got 1 warning\n\n#{
                      Formatter.format_messages(messages)
                    }\n"
+
         e ->
-          reraise e, System.stacktrace
+          reraise e, System.stacktrace()
       end
     end
 
@@ -70,8 +71,9 @@ defmodule Vnu.AssertionsTest do
                    "Expected the HTML document to be valid, but got 1 error\n\n#{
                      Formatter.format_messages(errors)
                    }\n"
+
         e ->
-          reraise e, System.stacktrace
+          reraise e, System.stacktrace()
       end
     end
 
@@ -100,7 +102,7 @@ defmodule Vnu.AssertionsTest do
           assert_valid_html(html, filter: Filter)
 
         e ->
-          reraise e, System.stacktrace
+          reraise e, System.stacktrace()
       end
     end
 
@@ -133,7 +135,7 @@ defmodule Vnu.AssertionsTest do
                    }\n\n...and 2 more.\n"
 
         e ->
-          reraise e, System.stacktrace
+          reraise e, System.stacktrace()
       end
     end
   end
@@ -170,7 +172,7 @@ defmodule Vnu.AssertionsTest do
                    }\n"
 
         e ->
-          reraise e, System.stacktrace
+          reraise e, System.stacktrace()
       end
     end
   end
@@ -212,7 +214,7 @@ defmodule Vnu.AssertionsTest do
                    }\n"
 
         e ->
-          reraise e, System.stacktrace
+          reraise e, System.stacktrace()
       end
     end
   end

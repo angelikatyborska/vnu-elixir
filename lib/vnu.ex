@@ -13,7 +13,7 @@ defmodule Vnu do
   ## Options
   - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator).
   Defaults to `http://localhost:8888`.
-  - ':filter' - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
+  - `:filter` - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
   Defaults to `nil` (no excluded messages).
 
 
@@ -70,7 +70,7 @@ defmodule Vnu do
   @doc ~S"""
   Validates the given CSS document.
 
-  See `validate_html/1` for the list of options and other details.
+  See `validate_html/2` for the list of options and other details.
 
   ## Examples
 
@@ -104,7 +104,7 @@ defmodule Vnu do
   @doc ~S"""
   Validates the given SVG document.
 
-  See `validate_html/1` for the list of options and other details.
+  See `validate_html/2` for the list of options and other details.
 
   ## Options
   - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
@@ -155,11 +155,12 @@ defmodule Vnu do
     Their presence will mean the document is invalid. Defaults to `false`.
 
   ## Examples
-      ie> {:ok, result} = Vnu.validate_html(""), server_url: "http://localhost:8888")
-      ie> Vnu.valid?(result)
+
+      iex> {:ok, result} = Vnu.validate_html("", server_url: "http://localhost:8888")
+      iex> Vnu.valid?(result)
       false
 
-      ie> {:ok, result} = Vnu.validate_html(~S(
+      iex> {:ok, result} = Vnu.validate_html(~S(
       ...><!DOCTYPE html>
       ...><html>
       ...><head>
@@ -170,9 +171,14 @@ defmodule Vnu do
       ...></body>
       ...></html>
       ...>), server_url: "http://localhost:8888")
-      ie> Vnu.valid?(result)
+      iex> [message] = result.messages
+      iex> message.message
+      "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document."
+      iex> message.sub_type
+      :warning
+      iex> Vnu.valid?(result)
       true
-      ie> Vnu.valid?(result, fail_on_warnings: true)
+      iex> Vnu.valid?(result, fail_on_warnings: true)
       false
   """
 

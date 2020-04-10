@@ -106,7 +106,7 @@ defmodule Vnu.Assertions do
   Their presence will mean the document is invalid. Defaults to `false`.
   - `message_print_limit` - THe maximum number of validation messages that will me printed in the error when the assertion fails.
   Can be an integer or `:infinity`. Defaults to `:infinity`.
-    - ':filter' - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
+    - `:filter` - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
   Defaults to `nil` (no excluded messages).
   """
   defmacro assert_valid_html(html, opts \\ []) do
@@ -118,7 +118,7 @@ defmodule Vnu.Assertions do
   @doc """
   Asserts that the given CSS document is valid.
 
-  See `assert_valid_html/1` for the list of options and other details.
+  See `assert_valid_html/2` for the list of options and other details.
   """
   defmacro assert_valid_css(css, opts \\ []) do
     quote do
@@ -129,7 +129,7 @@ defmodule Vnu.Assertions do
   @doc """
   Asserts that the given SVG document is valid.
 
-  See `assert_valid_html/1` for the list of options and other details.
+  See `assert_valid_html/2` for the list of options and other details.
   """
   defmacro assert_valid_svg(svg, opts \\ []) do
     quote do
