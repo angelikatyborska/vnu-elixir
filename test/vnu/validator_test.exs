@@ -25,36 +25,36 @@ defmodule Vnu.ValidatorTest do
     end
 
     test "can treat warnings as errors" do
-      assert Validator.valid?(%Result{messages: []}, warnings_as_errors: true)
+      assert Validator.valid?(%Result{messages: []}, fail_on_warnings: true)
 
-      assert Validator.valid?(%Result{messages: [%Message{type: :info}]}, warnings_as_errors: true)
+      assert Validator.valid?(%Result{messages: [%Message{type: :info}]}, fail_on_warnings: true)
 
       refute Validator.valid?(
                %Result{
                  messages: [%Message{type: :info}, %Message{type: :info, sub_type: :warning}]
                },
-               warnings_as_errors: true
+               fail_on_warnings: true
              )
 
       refute Validator.valid?(
                %Result{
                  messages: [%Message{type: :error}]
                },
-               warnings_as_errors: true
+               fail_on_warnings: true
              )
 
       refute Validator.valid?(
                %Result{
                  messages: [%Message{type: :unknown_type}]
                },
-               warnings_as_errors: true
+               fail_on_warnings: true
              )
 
       refute Validator.valid?(
                %Result{
                  messages: [%Message{type: :info}, %Message{type: :error}]
                },
-               warnings_as_errors: true
+               fail_on_warnings: true
              )
     end
   end

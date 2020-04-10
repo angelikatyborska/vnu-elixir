@@ -143,7 +143,7 @@ defmodule Vnu do
   Checks if the results of `Vnu.validate_html/2`, `Vnu.validate_css/2`, or `Vnu.validate_svg/2` determined the document to be valid.
 
   ## Options
-  * `:warnings_as_errors` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
+  * `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
         Their presence will mean the document is invalid. Defaults to `false`.
 
   ## Examples
@@ -164,7 +164,7 @@ defmodule Vnu do
       ...>), server_url: "http://localhost:8888")
       ie> Vnu.valid?(result)
       true
-      ie> Vnu.valid?(result, warnings_as_errors: true)
+      ie> Vnu.valid?(result, fail_on_warnings: true)
       false
   """
 

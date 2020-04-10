@@ -174,14 +174,13 @@ defmodule Vnu.FormatterTest do
             extract: "Ut\nvenenatis\nimperdiet magna in dignissim.",
             hilite_start: 13,
             hilite_length: 9
-          },
+          }
         ])
 
       assert Enum.at(result, 0) ==
                "#{yellow()}#{reverse()} Warning #{reset()} Lorem ipsum.\n" <>
-               "Ut↩venenatis↩imperdiet magna in dignissim.\n" <>
-               "             #{cyan()}^^^^^^^^^#{reset()}"
-
+                 "Ut↩venenatis↩imperdiet magna in dignissim.\n" <>
+                 "             #{cyan()}^^^^^^^^^#{reset()}"
     end
   end
 end

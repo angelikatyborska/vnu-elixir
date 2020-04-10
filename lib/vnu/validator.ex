@@ -5,10 +5,10 @@ defmodule Vnu.Validator do
 
   @doc false
   def valid?(%Result{messages: messages}, opts \\ []) do
-    warnings_as_errors = Keyword.get(opts, :warnings_as_errors, false)
+    fail_on_warnings = Keyword.get(opts, :fail_on_warnings, false)
 
     Enum.all?(messages, fn message ->
-      message.type == :info && (warnings_as_errors == false || message.sub_type != :warning)
+      message.type == :info && (fail_on_warnings == false || message.sub_type != :warning)
     end)
   end
 
