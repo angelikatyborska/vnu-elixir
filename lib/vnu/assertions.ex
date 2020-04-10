@@ -106,6 +106,8 @@ defmodule Vnu.Assertions do
   Their presence will mean the document is invalid. Defaults to `false`.
   - `message_print_limit` - THe maximum number of validation messages that will me printed in the error when the assertion fails.
   Can be an integer or `:infinity`. Defaults to `:infinity`.
+    - ':filter' - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
+  Defaults to `nil` (no excluded messages).
   """
   defmacro assert_valid_html(html, opts \\ []) do
     quote do

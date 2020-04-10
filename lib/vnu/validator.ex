@@ -16,10 +16,20 @@ defmodule Vnu.Validator do
   def validate(string, opts) do
     with {:ok, config} <- Config.new(opts),
          {:ok, %Result{} = response} <- HTTP.get_result(string, config),
-         {:ok, response} <- check_if_result_is_determinate(response) do
-      {:ok, response}
+         {:ok, response} <- check_if_result_is_determinate(response),
+         {:ok, filtered_response} <- run_filter(response, config) do
+      {:ok, filtered_response}
     else
       error -> error
+    end
+  end
+
+  defp run_filter(response, config) do
+    if config.filter do
+      filtered_messages = Enum.filter(response.messages, &(!config.filter.exclude_message?(&1)))
+      {:ok, %{response | messages: filtered_messages}}
+    else
+      {:ok, response}
     end
   end
 

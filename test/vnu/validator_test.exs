@@ -105,5 +105,33 @@ defmodule Vnu.ValidatorTest do
       assert error.message ==
                "The server could not finish validating the document, non-document errors occurred: [%Vnu.Message{extract: nil, first_column: nil, first_line: nil, hilite_length: nil, hilite_start: nil, last_column: nil, last_line: nil, message: \"message 1\", offset: nil, sub_type: nil, type: :non_document_error}]"
     end
+
+    test "filters out the messages", %{bypass: bypass} do
+      defmodule Filter do
+        @behaviour Vnu.MessageFilter
+
+        @impl Vnu.MessageFilter
+        def exclude_message?(message) do
+          message.type == :error
+        end
+      end
+
+      Bypass.expect(bypass, fn conn ->
+        body = %{
+          messages: [
+            %{type: "info", subType: "warning", message: "message 1"},
+            %{type: "error", subType: "fatal", message: "message 2"}
+          ]
+        }
+
+        Plug.Conn.resp(conn, 200, Jason.encode!(body))
+      end)
+
+      {:ok, %Result{messages: [message1]}} =
+        Validator.validate("", server_url: "http://localhost:#{bypass.port}", filter: Filter)
+
+      assert message1.type == :info
+      assert message1.sub_type == :warning
+    end
   end
 end

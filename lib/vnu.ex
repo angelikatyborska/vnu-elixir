@@ -11,7 +11,11 @@ defmodule Vnu do
   See `Vnu.valid?/1` and `Vnu.Message` for interpreting the result.
 
   ## Options
-    * `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
+  - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator).
+  Defaults to `http://localhost:8888`.
+  - ':filter' - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
+  Defaults to `nil` (no excluded messages).
+
 
   ## Examples
 

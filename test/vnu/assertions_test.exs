@@ -36,13 +36,15 @@ defmodule Vnu.AssertionsTest do
 
       try do
         assert_valid_html(html, fail_on_warnings: true)
-        assert false
+        raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
                    "Expected the HTML document to be valid, but got 1 warning\n\n#{
                      Formatter.format_messages(messages)
                    }\n"
+        e ->
+          reraise e, System.stacktrace
       end
     end
 
@@ -61,13 +63,44 @@ defmodule Vnu.AssertionsTest do
 
       try do
         assert_valid_html(html)
-        assert false
+        raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
                    "Expected the HTML document to be valid, but got 1 error\n\n#{
                      Formatter.format_messages(errors)
                    }\n"
+        e ->
+          reraise e, System.stacktrace
+      end
+    end
+
+    test "passes if all errors were filtered out" do
+      defmodule Filter do
+        @behaviour Vnu.MessageFilter
+
+        @impl Vnu.MessageFilter
+        def exclude_message?(_), do: true
+      end
+
+      html = """
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+      </head>
+      </html>
+      """
+
+      try do
+        assert_valid_html(html)
+        raise "this line should not be reached"
+      rescue
+        _error in [ExUnit.AssertionError] ->
+          assert_valid_html(html, filter: Filter)
+
+        e ->
+          reraise e, System.stacktrace
       end
     end
 
@@ -91,13 +124,16 @@ defmodule Vnu.AssertionsTest do
 
       try do
         assert_valid_html(html, fail_on_warnings: true, message_print_limit: 3)
-        assert false
+        raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
                    "Expected the HTML document to be valid, but got 3 errors and 2 warnings\n\n#{
                      Enum.take(Formatter.format_messages(messages), 3) |> Enum.join("\n\n")
                    }\n\n...and 2 more.\n"
+
+        e ->
+          reraise e, System.stacktrace
       end
     end
   end
@@ -125,13 +161,16 @@ defmodule Vnu.AssertionsTest do
 
       try do
         assert_valid_css(css, fail_on_warnings: true)
-        assert false
+        raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
                    "Expected the CSS document to be valid, but got 2 errors\n\n#{
                      Formatter.format_messages(messages) |> Enum.join("\n\n")
                    }\n"
+
+        e ->
+          reraise e, System.stacktrace
       end
     end
   end
@@ -164,13 +203,16 @@ defmodule Vnu.AssertionsTest do
 
       try do
         assert_valid_svg(svg, fail_on_warnings: true)
-        assert false
+        raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
                    "Expected the SVG document to be valid, but got 4 errors\n\n#{
                      Formatter.format_messages(messages) |> Enum.join("\n\n")
                    }\n"
+
+        e ->
+          reraise e, System.stacktrace
       end
     end
   end
