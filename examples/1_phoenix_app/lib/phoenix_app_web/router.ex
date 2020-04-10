@@ -17,6 +17,8 @@ defmodule PhoenixAppWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/valid", PageController, :valid
+    get "/invalid", PageController, :invalid
   end
 
   # Other scopes may use custom stacks.

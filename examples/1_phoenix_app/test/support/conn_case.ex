@@ -29,6 +29,11 @@ defmodule PhoenixAppWeb.ConnCase do
   end
 
   setup _tags do
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    vnu_opts = [
+      server_url: Application.get_env(:phoenix_app, :vnu_server_url),
+      fail_on_warnings: true
+    ]
+
+    {:ok, conn: Phoenix.ConnTest.build_conn(), vnu_opts: vnu_opts}
   end
 end
