@@ -24,6 +24,7 @@ defmodule Vnu.MixProject do
       {:httpoison, "~> 1.6"},
       {:jason, "~> 1.2"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:bypass, "~> 1.0", only: [:test]}
     ]
   end

@@ -1,7 +1,10 @@
 defmodule Vnu.Assertions do
+  @moduledoc "ExUnit assertions for checking the validity of HTML, CSS, and SVG documents."
+
   alias Vnu.{Formatter}
 
   @doc false
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defmacro assert_valid(string, format, opts \\ []) do
     quote do
       {validate_function, label} =

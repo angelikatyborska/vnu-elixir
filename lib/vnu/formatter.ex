@@ -18,21 +18,9 @@ defmodule Vnu.Formatter do
       extract = format_extract(message)
 
       header = "#{with_color("#{reverse()} #{type} ", color)} #{message.message}"
+      extract_with_location = extract_with_location(extract, location)
 
-      extract =
-        case extract do
-          [extract, hilite] ->
-            "#{if location, do: with_color("[#{location}] ", label_color())}#{extract}\n" <>
-              "#{if location, do: String.duplicate(" ", String.length("[#{location}] "))}#{hilite}"
-
-          [extract] ->
-            "#{if location, do: with_color("[#{location}] ", label_color())}#{extract}"
-
-          nil ->
-            nil
-        end
-
-      [header, extract]
+      [header, extract_with_location]
       |> Enum.filter(& &1)
       |> Enum.join("\n")
     end)
@@ -131,6 +119,22 @@ defmodule Vnu.Formatter do
 
     if extract do
       if hilite, do: [extract, hilite], else: [extract]
+    end
+  end
+
+  defp extract_with_location(extract, location) do
+    location = if location, do: "[#{location}] "
+
+    case extract do
+      [extract, hilite] ->
+        "#{if location, do: with_color(location, label_color())}#{extract}\n" <>
+          "#{if location, do: String.duplicate(" ", String.length(location))}#{hilite}"
+
+      [extract] ->
+        "#{if location, do: with_color(location, label_color())}#{extract}"
+
+      nil ->
+        nil
     end
   end
 end
