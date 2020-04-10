@@ -25,4 +25,12 @@ HTTP/1.1 200 OK
 
 ## Usage
 
+### As ExUnit assertions
+
 ...
+
+### As a mix task
+
+...
+
+### General usage

@@ -7,7 +7,8 @@ defmodule Vnu.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      docs: [extras: ["README.md"]]
     ]
   end
 
@@ -25,6 +26,7 @@ defmodule Vnu.MixProject do
       {:jason, "~> 1.2"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.0", only: [:dev], runtime: false},
+      {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
       {:bypass, "~> 1.0", only: [:test]}
     ]
   end

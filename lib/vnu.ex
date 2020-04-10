@@ -1,4 +1,6 @@
 defmodule Vnu do
+  @moduledoc "General purpose validation functions for HTML, CSS, and SVG documents."
+
   alias Vnu.{Error, Result, Validator}
 
   @doc ~S"""
@@ -50,7 +52,10 @@ defmodule Vnu do
       ]}}
 
       iex> Vnu.validate_html("", server_url: "http://wrong-domain")
-      {:error, %Vnu.Error{reason: :unexpected_server_response, message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"}}
+      {:error, %Vnu.Error{
+        reason: :unexpected_server_response,
+        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+      }}
   """
 
   @spec validate_html(String.t(), Keyword.t()) :: {:ok, Result.t()} | {:error, Error.t()}
@@ -61,12 +66,7 @@ defmodule Vnu do
   @doc ~S"""
   Validates the given CSS document.
 
-  Returns `{:ok, %Vnu.Result{}}` if the validation process finished successfully, and `{:error, %Vnu.Error{}}` otherwise.
-  Note that the `{:ok, %Vnu.Result{}}` return value does not mean necessarily that the document is valid.
-  See `Vnu.valid?/1` and `Vnu.Message` for interpreting the result.
-
-  ## Options
-  * `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
+  See `validate_html/1` for an `opts` list and other details.
 
   ## Examples
 
@@ -86,7 +86,10 @@ defmodule Vnu do
       ]}}
 
       iex> Vnu.validate_css("", server_url: "http://wrong-domain")
-      {:error, %Vnu.Error{reason: :unexpected_server_response, message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"}}
+      {:error, %Vnu.Error{
+        reason: :unexpected_server_response,
+        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+      }}
   """
 
   @spec validate_css(String.t(), Keyword.t()) :: {:ok, Result.t()} | {:error, Error.t()}
@@ -97,9 +100,7 @@ defmodule Vnu do
   @doc ~S"""
   Validates the given SVG document.
 
-  Returns `{:ok, %Vnu.Result{}}` if the validation process finished successfully, and `{:error, %Vnu.Error{}}` otherwise.
-  Note that the `{:ok, %Vnu.Result{}}` return value does not mean necessarily that the document is valid.
-  See `Vnu.valid?/1` and `Vnu.Message` for interpreting the result.
+  See `validate_html/1` for an `opts` list and other details.
 
   ## Options
   * `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
@@ -131,7 +132,10 @@ defmodule Vnu do
       ]}}
 
       iex> Vnu.validate_svg("", server_url: "http://wrong-domain")
-      {:error, %Vnu.Error{reason: :unexpected_server_response, message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"}}
+      {:error, %Vnu.Error{
+        reason: :unexpected_server_response,
+        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+      }}
   """
 
   @spec validate_svg(String.t(), Keyword.t()) :: {:ok, Result.t()} | {:error, Error.t()}
@@ -144,7 +148,7 @@ defmodule Vnu do
 
   ## Options
   * `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
-        Their presence will mean the document is invalid. Defaults to `false`.
+    Their presence will mean the document is invalid. Defaults to `false`.
 
   ## Examples
       ie> {:ok, result} = Vnu.validate_html(""), server_url: "http://localhost:8888")
