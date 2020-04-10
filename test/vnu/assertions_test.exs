@@ -71,7 +71,7 @@ defmodule Vnu.AssertionsTest do
       end
     end
 
-    test "fails when many errors and many warnings" do
+    test "fails when many errors and many warnings with message_print_limit" do
       html = """
       <!DOCTYPE html>
       <html>
@@ -90,14 +90,14 @@ defmodule Vnu.AssertionsTest do
       messages = Enum.filter(messages, &(&1.type == :error || &1.sub_type == :warning))
 
       try do
-        assert_valid_html(html, fail_on_warnings: true)
+        assert_valid_html(html, fail_on_warnings: true, message_print_limit: 3)
         assert false
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
                    "Expected the HTML document to be valid, but got 3 errors and 2 warnings\n\n#{
-                     Formatter.format_messages(messages) |> Enum.join("\n\n")
-                   }\n"
+                     Enum.take(Formatter.format_messages(messages), 3) |> Enum.join("\n\n")
+                   }\n\n...and 2 more.\n"
       end
     end
   end

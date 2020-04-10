@@ -20,8 +20,8 @@ defmodule Vnu.Assertions do
             assert true
             unquote(string)
           else
-            # TODO: do not print all messages if there is a lot, make the threshold customizable
             fail_on_warnings? = Keyword.get(unquote(opts), :fail_on_warnings, false)
+            message_print_limit = Keyword.get(unquote(opts), :message_print_limit, :infinity)
             grouped = Enum.group_by(result.messages, & &1.type)
 
             errors = Map.get(grouped, :error, [])
@@ -53,15 +53,32 @@ defmodule Vnu.Assertions do
                 {errors, error_count_phrase}
               end
 
+            {messages_to_be_printed, omitted_messages_number} =
+              if message_print_limit != :infinity && message_print_limit < Enum.count(messages) do
+                {Enum.take(Formatter.sort(messages), message_print_limit),
+                 Enum.count(messages) - message_print_limit}
+              else
+                {messages, 0}
+              end
+
             messages_string =
-              Formatter.format_messages(messages)
+              Formatter.format_messages(messages_to_be_printed)
               |> Enum.join("\n\n")
 
-            flunk("""
+            error_message = """
             Expected the #{label} document to be valid, but got #{expected_string}
 
             #{messages_string}
-            """)
+            """
+
+            error_message =
+              if omitted_messages_number > 0 do
+                error_message <> "\n...and #{omitted_messages_number} more.\n"
+              else
+                error_message
+              end
+
+            flunk(error_message)
           end
 
         {:error, error} ->
@@ -87,6 +104,8 @@ defmodule Vnu.Assertions do
   - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
   - `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
   Their presence will mean the document is invalid. Defaults to `false`.
+  - `message_print_limit` - THe maximum number of validation messages that will me printed in the error when the assertion fails.
+  Can be an integer or `:infinity`. Defaults to `:infinity`.
   """
   defmacro assert_valid_html(html, opts \\ []) do
     quote do
