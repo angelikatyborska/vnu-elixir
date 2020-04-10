@@ -8,6 +8,7 @@ defmodule Vnu.MixProject do
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      aliases: aliases(),
       docs: [extras: ["README.md"]]
     ]
   end
@@ -28,6 +29,12 @@ defmodule Vnu.MixProject do
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
       {:bypass, "~> 1.0", only: [:test]}
+    ]
+  end
+
+  defp aliases() do
+    [
+      lint: ["compile --force --warnings-as-errors", "format", "credo", "dialyzer"]
     ]
   end
 end

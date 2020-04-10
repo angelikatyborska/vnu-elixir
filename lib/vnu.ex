@@ -150,10 +150,6 @@ defmodule Vnu do
   @doc ~S"""
   Checks if the results of `Vnu.validate_html/2`, `Vnu.validate_css/2`, or `Vnu.validate_svg/2` determined the document to be valid.
 
-  ## Options
-  - `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
-    Their presence will mean the document is invalid. Defaults to `false`.
-
   ## Examples
 
       iex> {:ok, result} = Vnu.validate_html("", server_url: "http://localhost:8888")

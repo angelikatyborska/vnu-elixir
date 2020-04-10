@@ -103,11 +103,11 @@ defmodule Vnu.Assertions do
 
   - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
   - `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
-  Their presence will mean the document is invalid. Defaults to `false`.
+    Their presence will mean the document is invalid. Defaults to `false`.
   - `message_print_limit` - THe maximum number of validation messages that will me printed in the error when the assertion fails.
-  Can be an integer or `:infinity`. Defaults to `:infinity`.
-    - `:filter` - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
-  Defaults to `nil` (no excluded messages).
+    Can be an integer or `:infinity`. Defaults to `:infinity`.
+  - `:filter` - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
+    Defaults to `nil` (no excluded messages).
   """
   defmacro assert_valid_html(html, opts \\ []) do
     quote do
