@@ -12,6 +12,8 @@ defmodule Vnu.Message do
   - `:extract` - The snippet of the document that the message is about.
   -  `:first_line`, `:last_line`, `:first_column`, `:last_column` - The position of the part of the document the message is about relative to the whole document.
       Lines and columns are numbered from 1.
+  - `:hilite_start`, `:hilite_length` - Indicate the start and length of substring of the `:extract` that the message is roughly about.
+      The characters are numbered from 0.
   """
   defstruct([
     :type,
