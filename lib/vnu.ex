@@ -66,7 +66,7 @@ defmodule Vnu do
   @doc ~S"""
   Validates the given CSS document.
 
-  See `validate_html/1` for an `opts` list and other details.
+  See `validate_html/1` for the list of options and other details.
 
   ## Examples
 
@@ -100,10 +100,10 @@ defmodule Vnu do
   @doc ~S"""
   Validates the given SVG document.
 
-  See `validate_html/1` for an `opts` list and other details.
+  See `validate_html/1` for the list of options and other details.
 
   ## Options
-  * `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
+  - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
 
   ## Examples
 
@@ -147,7 +147,7 @@ defmodule Vnu do
   Checks if the results of `Vnu.validate_html/2`, `Vnu.validate_css/2`, or `Vnu.validate_svg/2` determined the document to be valid.
 
   ## Options
-  * `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
+  - `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
     Their presence will mean the document is invalid. Defaults to `false`.
 
   ## Examples

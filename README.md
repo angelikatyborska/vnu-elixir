@@ -35,6 +35,12 @@ HTTP/1.1 200 OK
 
 ### General usage
 
+...
+
+## Contributing
+
+...
+
 ## License
 
 Vnu is released under the MIT License. See the LICENSE file for further details.

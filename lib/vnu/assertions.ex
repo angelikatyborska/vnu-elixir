@@ -18,6 +18,7 @@ defmodule Vnu.Assertions do
         {:ok, result} ->
           if Vnu.valid?(result, unquote(opts)) do
             assert true
+            unquote(string)
           else
             # TODO: do not print all messages if there is a lot, make the threshold customizable
             fail_on_warnings? = Keyword.get(unquote(opts), :fail_on_warnings, false)
@@ -78,18 +79,37 @@ defmodule Vnu.Assertions do
     end
   end
 
+  @doc """
+  Asserts that the given HTML document is valid.
+
+  ## Options
+
+  - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
+  - `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
+  Their presence will mean the document is invalid. Defaults to `false`.
+  """
   defmacro assert_valid_html(html, opts \\ []) do
     quote do
       assert_valid(unquote(html), :html, unquote(opts))
     end
   end
 
+  @doc """
+  Asserts that the given CSS document is valid.
+
+  See `assert_valid_html/1` for the list of options and other details.
+  """
   defmacro assert_valid_css(css, opts \\ []) do
     quote do
       assert_valid(unquote(css), :css, unquote(opts))
     end
   end
 
+  @doc """
+  Asserts that the given SVG document is valid.
+
+  See `assert_valid_html/1` for the list of options and other details.
+  """
   defmacro assert_valid_svg(svg, opts \\ []) do
     quote do
       assert_valid(unquote(svg), :svg, unquote(opts))

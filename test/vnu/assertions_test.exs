@@ -1,11 +1,12 @@
 defmodule Vnu.AssertionsTest do
   use ExUnit.Case
+  doctest Vnu.Assertions
   import Vnu.Assertions
   alias Vnu.{Formatter, Result}
 
   describe "assert_valid_html" do
     test "passes for valid html with only warnings" do
-      assert_valid_html("""
+      html = """
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -13,7 +14,10 @@ defmodule Vnu.AssertionsTest do
           <title>Hello World</title>
         </head>
         </html>
-      """)
+      """
+
+      return = assert_valid_html(html)
+      assert return == html
     end
 
     test "fails for valid html with only warnings when fail_on_warnings true" do
@@ -100,10 +104,13 @@ defmodule Vnu.AssertionsTest do
 
   describe "assert_valid_css" do
     test "passes for valid css" do
-      assert_valid_css("""
+      css = """
         nav { background-color: teal; }
         nav a { color: white; text-decoration: underline; }
-      """)
+      """
+
+      return = assert_valid_css(css)
+      assert return == css
     end
 
     test "fails when many errors and many warnings" do
@@ -131,12 +138,15 @@ defmodule Vnu.AssertionsTest do
 
   describe "assert_valid_svg" do
     test "passes for valid svg" do
-      assert_valid_svg("""
+      svg = """
       <svg width="5cm" height="4cm" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <desc>Rectangle</desc>
       <rect x="0.5cm" y="0.5cm" height="1cm" width="1cm"/>
       </svg>
-      """)
+      """
+
+      return = assert_valid_svg(svg)
+      assert return == svg
     end
 
     test "fails when many errors and many warnings" do
