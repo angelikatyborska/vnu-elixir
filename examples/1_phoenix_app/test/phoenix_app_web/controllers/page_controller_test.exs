@@ -45,20 +45,4 @@ defmodule PhoenixAppWeb.PageControllerTest do
     |> html_response(200)
     |> assert_valid_html(vnu_opts)
   end
-
-  test "GET /css/valid.css", %{conn: conn} do
-    conn = get(conn, Routes.static_path(PhoenixAppWeb.Endpoint, "/css/valid.css"))
-
-    conn
-    |> response(200)
-    |> assert_valid_css()
-  end
-
-  test "GET /css/invalid.css", %{conn: conn} do
-    conn = get(conn, Routes.static_path(PhoenixAppWeb.Endpoint, "/css/invalid.css"))
-
-    conn
-    |> response(200)
-    |> assert_valid_css()
-  end
 end

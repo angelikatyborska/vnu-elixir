@@ -1,18 +1,13 @@
 defmodule Vnu.Assertions do
   @moduledoc "ExUnit assertions for checking the validity of HTML, CSS, and SVG documents."
 
-  alias Vnu.{Formatter}
+  alias Vnu.{Formatter, CLI}
 
   @doc false
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defmacro assert_valid(string, format, opts \\ []) do
     quote do
-      {validate_function, label} =
-        case unquote(format) do
-          :html -> {&Vnu.validate_html/2, "HTML"}
-          :css -> {&Vnu.validate_css/2, "CSS"}
-          :svg -> {&Vnu.validate_svg/2, "SVG"}
-        end
+      {validate_function, label} = CLI.format_to_function_and_pretty_name(unquote(format))
 
       case validate_function.(unquote(string), unquote(opts)) do
         {:ok, result} ->
@@ -29,28 +24,23 @@ defmodule Vnu.Assertions do
             warnings = Enum.filter(infos, &(&1.sub_type == :warning))
             error_count = Enum.count(errors)
             warning_count = Enum.count(warnings)
+            counts = %{error_count: error_count, warning_count: warning_count, info_count: nil}
 
-            error_count_phrase =
-              case error_count do
-                0 -> nil
-                1 -> "#{error_count} error"
-                n -> "#{error_count} errors"
-              end
-
-            warning_count_phrase =
-              case warning_count do
-                0 -> nil
-                1 -> "#{warning_count} warning"
-                n -> "#{warning_count} warnings"
-              end
+            format_count_opts = [
+              exclude_zeros: true,
+              exclude_infos: true,
+              with_colors: false
+            ]
 
             {messages, expected_string} =
               if fail_on_warnings? do
-                {errors ++ warnings,
-                 Enum.filter([error_count_phrase, warning_count_phrase], & &1)
-                 |> Enum.join(" and ")}
+                {errors ++ warnings, Formatter.format_counts(counts, format_count_opts)}
               else
-                {errors, error_count_phrase}
+                {errors,
+                 Formatter.format_counts(
+                   counts,
+                   Keyword.merge(format_count_opts, exclude_warnings: true)
+                 )}
               end
 
             {messages_to_be_printed, omitted_messages_number} =

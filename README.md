@@ -1,6 +1,6 @@
 # Vnu
 
-An Elixir client for [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/) HTML validator.
+An Elixir client for [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/).
 
 ## Prerequisites
 
@@ -70,6 +70,8 @@ end
 ```
 
 See [`examples/1_phoenix_app/test/phoenix_app_web/controllers/page_controller_test.exs`](https://github.com/angelikatyborska/vnu-elixir/blob/master/examples/1_phoenix_app/test/phoenix_app_web/controllers/page_controller_test.exs) for more.
+
+![](examples/1_phoenix_app_failing_test.png)
 
 ### Mix task
 

@@ -3,11 +3,11 @@ defmodule Vnu.Formatter do
 
   alias Vnu.Message
 
-  import IO.ANSI, only: [red: 0, yellow: 0, blue: 0, cyan: 0, reset: 0, reverse: 0]
+  import IO.ANSI, only: [red: 0, yellow: 0, blue: 0, cyan: 0, green: 0, reset: 0, reverse: 0]
 
   @doc false
   @spec format_messages(list(Message.t())) :: list(String.t())
-  def format_messages(messages) do
+  def format_messages(messages, file_path \\ nil) do
     messages
     |> sort()
     |> Enum.map(fn message ->
@@ -18,7 +18,8 @@ defmodule Vnu.Formatter do
       extract = format_extract(message)
 
       header = "#{with_color("#{reverse()} #{type} ", color)} #{message.message}"
-      extract_with_location = extract_with_location(extract, location)
+      left_padding = if file_path, do: with_color("┃ ", color), else: ""
+      extract_with_location = extract_with_location(extract, location, left_padding, file_path)
 
       [header, extract_with_location]
       |> Enum.filter(& &1)
@@ -44,6 +45,76 @@ defmodule Vnu.Formatter do
   end
 
   @doc false
+  def format_counts(
+        %{error_count: error_count, warning_count: warning_count, info_count: info_count},
+        opts \\ []
+      ) do
+    exclude_zeros? = Keyword.get(opts, :exclude_zeros, false)
+    exclude_warnings? = Keyword.get(opts, :exclude_warnings, false)
+    exclude_infos? = Keyword.get(opts, :exclude_infos, false)
+    with_colors? = Keyword.get(opts, :with_colors, true)
+
+    error_count_phrase =
+      phrase_maybe_with_color(
+        "error",
+        "errors",
+        error_count,
+        exclude_zeros?,
+        error_color(),
+        with_colors?
+      )
+
+    warning_count_phrase =
+      phrase_maybe_with_color(
+        "warning",
+        "warnings",
+        warning_count,
+        exclude_zeros?,
+        warning_color(),
+        with_colors?
+      )
+
+    info_count_phrase =
+      phrase_maybe_with_color(
+        "info",
+        "infos",
+        info_count,
+        exclude_zeros?,
+        info_color(),
+        with_colors?
+      )
+
+    phrases = []
+    phrases = if exclude_infos?, do: phrases, else: [info_count_phrase | phrases]
+    phrases = if exclude_warnings?, do: phrases, else: [warning_count_phrase | phrases]
+    phrases = [error_count_phrase | phrases]
+
+    phrases = Enum.filter(phrases, & &1)
+
+    case phrases do
+      [a, b, c] -> "#{a}, #{b}, and #{c}"
+      [a, b] -> "#{a} and #{b}"
+      [a] -> "#{a}"
+      [] -> ""
+    end
+  end
+
+  defp phrase_maybe_with_color(singular, plural, count, exclude_zeros?, color, with_color?) do
+    phrase =
+      case count do
+        0 -> if exclude_zeros?, do: nil, else: "#{count} #{plural}"
+        1 -> "#{count} #{singular}"
+        _ -> "#{count} #{plural}"
+      end
+
+    if phrase && with_color? do
+      with_color(phrase, color)
+    else
+      phrase
+    end
+  end
+
+  @doc false
   def with_color(string, color) do
     "#{color}#{string}#{reset()}"
   end
@@ -61,6 +132,11 @@ defmodule Vnu.Formatter do
   @doc false
   def error_color() do
     red()
+  end
+
+  @doc false
+  def success_color() do
+    green()
   end
 
   @doc false
@@ -122,19 +198,59 @@ defmodule Vnu.Formatter do
     end
   end
 
-  defp extract_with_location(extract, location) do
-    location = if location, do: "[#{location}] "
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
+  defp extract_with_location(extract, location, left_padding, path) do
+    if path do
+      location = location_with_path(location, path)
 
-    case extract do
-      [extract, hilite] ->
-        "#{if location, do: with_color(location, label_color())}#{extract}\n" <>
-          "#{if location, do: String.duplicate(" ", String.length(location))}#{hilite}"
+      case extract do
+        [extract, hilite] ->
+          "#{left_padding}#{with_color(location, label_color())}\n" <>
+            "#{left_padding}#{extract}\n" <>
+            "#{left_padding}#{hilite}"
 
-      [extract] ->
-        "#{if location, do: with_color(location, label_color())}#{extract}"
+        [extract] ->
+          "#{left_padding}#{with_color(location, label_color())}\n" <>
+            "#{left_padding}#{extract}"
 
-      nil ->
-        nil
+        nil ->
+          "#{left_padding}#{with_color(location, label_color())}"
+      end
+    else
+      location = location_without_path(location)
+
+      case extract do
+        [extract, hilite] ->
+          "#{left_padding}#{if location, do: with_color(location, label_color())}#{extract}\n" <>
+            "#{left_padding}#{if location, do: String.duplicate(" ", String.length(location))}#{
+              hilite
+            }"
+
+        [extract] ->
+          "#{left_padding}#{if location, do: with_color(location, label_color())}#{extract}"
+
+        nil ->
+          nil
+      end
     end
+  end
+
+  defp location_with_path(location, path) do
+    location =
+      if location do
+        location
+        |> String.replace(~r/L/, "")
+        |> String.replace(~r/-(.)*/, "")
+      end
+
+    if location do
+      path <> ":" <> location
+    else
+      path
+    end
+  end
+
+  defp location_without_path(location) do
+    if location, do: "[#{location}] "
   end
 end

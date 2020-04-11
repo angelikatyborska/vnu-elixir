@@ -1,0 +1,11 @@
+body {
+    background-color: yellow;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+a:hover {
+    color: green;
+}
