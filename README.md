@@ -39,9 +39,15 @@ And run:
 $ mix deps.get
 ```
 
+## Documentation
+
+... (TODO: put hexdocs.pm link here)
+
 ## Usage
 
 ### ExUnit assertions
+
+If you are building an application that generates HTML, CSS, or SVG files, you might want to use those validations in your tests.
 
 - `Vnu.Assertions.assert_valid_html/2`
 - `Vnu.Assertions.assert_valid_css/2`
@@ -75,10 +81,23 @@ See [`examples/1_phoenix_app/test/phoenix_app_web/controllers/page_controller_te
 
 ### Mix task
 
-To be implemented
-...
+If you have static HTML, CSS, or SVG files in your project, you might want to validate them with those mix tasks:
+
+- `mix vnu.validate.html`
+- `mix vnu.validate.css`
+- `mix vnu.validate.svg`
+
+#### Example
+
+```bash
+$ mix vnu.validate.css --server-url localhost:8888 assets/**/*.css
+```
+
+![](examples/1_phoenix_app_failing_mix_task.png)
 
 ### General purpose
+
+If you need HTML, CSS, or SVG validation for something else, try one of those functions:
 
 - `Vnu.validate_html/2`
 - `Vnu.validate_css/2`

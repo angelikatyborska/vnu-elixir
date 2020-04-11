@@ -2,7 +2,7 @@ defmodule Mix.Tasks.Vnu do
   use Mix.Task
 
   @shortdoc "Prints Vnu tasks and their information."
-  @moduledoc @shortdoc
+  @moduledoc false
 
   @doc false
   @spec run(list()) :: no_return()

@@ -8,7 +8,7 @@ defmodule Vnu.CLI do
   def validate(argv, format) do
     {opts, files, invalid_args} =
       OptionParser.parse(argv,
-        strict: [server_url: :string, fail_on_warnings: :boolean]
+        strict: [server_url: :string, fail_on_warnings: :boolean, filter: :string]
       )
 
     if invalid_args != [] do
@@ -19,6 +19,13 @@ defmodule Vnu.CLI do
     if files == [] do
       print_usage_info(format)
       Mix.raise("No files given")
+    end
+
+    opts = Keyword.update(opts, :filter, nil, &Module.concat([&1]))
+
+    if Keyword.get(opts, :filter, nil) do
+      # must compile to ensure the filter module is available
+      Mix.Task.run("compile", [])
     end
 
     fail_on_warnings? = Keyword.get(opts, :fail_on_warnings, false)
@@ -70,6 +77,19 @@ defmodule Vnu.CLI do
       warning_count: Enum.sum(Enum.map(results, fn {_, %{warning_count: n}} -> n end))
     }
 
+    handle_total_counts(results, total_counts, fail_on_warnings?)
+  end
+
+  @doc false
+  def format_to_function_and_pretty_name(format) do
+    case format do
+      :html -> {&Vnu.validate_html/2, "HTML"}
+      :css -> {&Vnu.validate_css/2, "CSS"}
+      :svg -> {&Vnu.validate_svg/2, "SVG"}
+    end
+  end
+
+  defp handle_total_counts(results, total_counts, fail_on_warnings?) do
     case total_counts do
       %{error_count: 0, warning_count: 0} ->
         exit_all_valid()
@@ -90,28 +110,28 @@ defmodule Vnu.CLI do
   end
 
   @doc false
-  def format_to_function_and_pretty_name(format) do
-    case format do
-      :html -> {&Vnu.validate_html/2, "HTML"}
-      :css -> {&Vnu.validate_css/2, "CSS"}
-      :svg -> {&Vnu.validate_svg/2, "SVG"}
-    end
-  end
-
-  @spec print_usage_info(atom()) :: no_return()
-  defp print_usage_info(format) do
-    usage_info = """
+  def usage_info(format) do
+    """
     mix vnu.validate.#{format} [options] file1 [file2, file3...]
 
     Options:
       --server-url [string]
-      --fail-on-warnings / --no-fail-on-warnings
+          The URL of the Checker server. Defaults to `http://localhost:8888`.
+
+      --fail-on-warnings, --no-fail-on-warnings
+          Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
+
+      --filter [string]
+          A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
 
     Example:
       mix vnu.validate.#{format} --server-url localhost:8888 priv/static/**/*.#{format}
     """
+  end
 
-    Mix.shell().info(usage_info)
+  @spec print_usage_info(atom()) :: no_return()
+  defp print_usage_info(format) do
+    Mix.shell().info(usage_info(format))
   end
 
   @spec exit_all_valid() :: no_return()
@@ -138,19 +158,22 @@ defmodule Vnu.CLI do
 
   @doc false
   def summary(results) do
-    results
-    |> Enum.map(fn {file, counts} ->
-      summary = Formatter.format_counts(counts, exclude_zeros: true)
+    summary =
+      results
+      |> Enum.map(fn {file, counts} ->
+        summary = Formatter.format_counts(counts, exclude_zeros: true)
 
-      summary =
-        if summary == "" do
-          Formatter.with_color("✓ OK", Formatter.success_color())
-        else
-          summary
-        end
+        summary =
+          if summary == "" do
+            Formatter.with_color("✓ OK", Formatter.success_color())
+          else
+            summary
+          end
 
-      "#{file}: #{summary}"
-    end)
-    |> Enum.join("\n")
+        "  - #{file}: #{summary}"
+      end)
+      |> Enum.join("\n")
+
+    "Summary:\n" <> summary
   end
 end

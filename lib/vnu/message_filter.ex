@@ -13,7 +13,8 @@ defmodule Vnu.MessageFilter do
 
     @impl Vnu.MessageFilter
     def exclude_message?(%Vnu.Message{message: message}) do
-      # those errors are caused by the CSRF meta tag (`csrf_meta_tag()`) present in the layout of a newly-generated Phoenix app
+      # those errors are caused by the CSRF meta tag (`csrf_meta_tag()`)
+      # present in the layout of a newly-generated Phoenix app
       patterns_to_ignore = [
         ~r/A document must not include more than one “meta” element with a “charset” attribute./,
         ~r/Attribute “(.)*” not allowed on element “meta” at this point./

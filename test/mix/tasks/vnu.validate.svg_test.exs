@@ -27,8 +27,8 @@ defmodule Mix.Tasks.Vnu.Validate.SvgTest do
       Mix.Tasks.Vnu.Validate.Svg.run([])
     end
 
-    usage_info = usage_info()
-    assert_received {:mix_shell, :info, ^usage_info}
+    usage_info = Vnu.CLI.usage_info(:svg)
+    assert_received {:mix_shell, :info, [^usage_info]}
   end
 
   test "requires valid options" do
@@ -36,22 +36,7 @@ defmodule Mix.Tasks.Vnu.Validate.SvgTest do
       Mix.Tasks.Vnu.Validate.Svg.run(["--banana"])
     end
 
-    usage_info = usage_info()
-    assert_received {:mix_shell, :info, ^usage_info}
-  end
-
-  defp usage_info() do
-    [
-      """
-      mix vnu.validate.svg [options] file1 [file2, file3...]
-
-      Options:
-        --server-url [string]
-        --fail-on-warnings / --no-fail-on-warnings
-
-      Example:
-        mix vnu.validate.svg --server-url localhost:8888 priv/static/**/*.svg
-      """
-    ]
+    usage_info = Vnu.CLI.usage_info(:svg)
+    assert_received {:mix_shell, :info, [^usage_info]}
   end
 end

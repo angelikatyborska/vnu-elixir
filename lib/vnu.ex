@@ -150,6 +150,11 @@ defmodule Vnu do
   @doc ~S"""
   Checks if the results of `Vnu.validate_html/2`, `Vnu.validate_css/2`, or `Vnu.validate_svg/2` determined the document to be valid.
 
+  ## Options
+  - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
+  - `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
+    Their presence will mean the document is invalid. Defaults to `false`.
+
   ## Examples
 
       iex> {:ok, result} = Vnu.validate_html("", server_url: "http://localhost:8888")
