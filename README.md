@@ -1,4 +1,4 @@
-# Vnu [WORK IN PROGRESS]
+# Vnu [WORK IN PROGRESS] [![angelikatyborska](https://circleci.com/gh/angelikatyborska/vnu-elixir.svg?style=shield)](https://circleci.com/gh/angelikatyborska/vnu-elixir)
 
 An Elixir client for [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/).
 
@@ -10,8 +10,8 @@ It offers ExUnit assertions for validating dynamic content in tests, Mix tasks f
 
 ## Prerequisites
 
-While it is possible to use this library with the service run by W3C at [validator.w3.org/nu/](https://validator.w3.org/nu/),
-I would recommend running your own instance. You will eliminate a lot of network latency if it runs on the same machine as your code, and you will not hit any rate limits that might exist for [validator.w3.org/nu/](https://validator.w3.org/nu/).
+While it is possible to use this library with the service run by W3C at [validator.w3.org/nu](https://validator.w3.org/nu/),
+I would recommend running your own instance. You will eliminate a lot of network latency if it runs on the same machine as your code, and you will not hit any rate limits that might exist for [validator.w3.org/nu](https://validator.w3.org/nu/).
 
 The source of the Checker can be found in the repository [validator/validator](https://github.com/validator/validator).
 Follow their instructions on how to download it and [run it as a web server](https://github.com/validator/validator#standalone-web-server).
