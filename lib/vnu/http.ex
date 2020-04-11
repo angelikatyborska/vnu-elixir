@@ -16,7 +16,7 @@ defmodule Vnu.HTTP do
 
     headers = [{"Content-Type", "#{content_type}; charset=utf-8"}]
 
-    case HTTPoison.post(url, html, headers) do
+    case HTTPoison.post(url, html, headers, follow_redirect: true) do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
         parse_body(body)
 

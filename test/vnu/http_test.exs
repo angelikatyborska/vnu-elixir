@@ -107,5 +107,13 @@ defmodule Vnu.HTTPTest do
 
       assert error.reason == :unexpected_server_response
     end
+
+    test "works against the real server" do
+      {:ok, %Result{}} =
+        HTTP.get_result(
+          "",
+          Config.new!(server_url: "https://validator.w3.org/nu", format: :html)
+        )
+    end
   end
 end

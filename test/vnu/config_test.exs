@@ -5,12 +5,12 @@ defmodule Vnu.ConfigTest do
   describe "new" do
     test "defaults" do
       {:ok, config} = Config.new([])
-      assert config == %Config{server_url: "http://localhost:8888", format: :html}
+      assert config == %Config{server_url: "http://localhost:8888/", format: :html}
     end
 
-    test "trims trailing slash from server_url" do
-      {:ok, config} = Config.new(server_url: "http://localhost:1234/")
-      assert config.server_url == "http://localhost:1234"
+    test "adds trailing slash to server_url" do
+      {:ok, config} = Config.new(server_url: "http://localhost:1234")
+      assert config.server_url == "http://localhost:1234/"
     end
 
     test "server_url must be a string" do
