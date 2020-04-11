@@ -28,7 +28,7 @@ defmodule Vnu do
       ...><body>
       ...></body>
       ...></html>
-      ...>), server_url: "http://localhost:8888")
+      ...>), server_url: System.get_env("VNU_SERVER_URL") || "http://localhost:8888")
       {:ok, %Vnu.Result{messages: [
         %Vnu.Message{
           type: :error,
@@ -74,7 +74,7 @@ defmodule Vnu do
 
   ## Examples
 
-      iex> Vnu.validate_css(".button { display: banana; }", server_url: "http://localhost:8888")
+      iex> Vnu.validate_css(".button { display: banana; }", server_url: System.get_env("VNU_SERVER_URL") || "http://localhost:8888")
       {:ok, %Vnu.Result{messages: [
         %Vnu.Message{
           type: :error,
@@ -116,7 +116,7 @@ defmodule Vnu do
       ...><desc>Rectangle</desc>
       ...><rect x="0.5cm" y="0.5cm" height="1cm"/>
       ...></svg>
-      ...> ), server_url: "http://localhost:8888")
+      ...> ), server_url: System.get_env("VNU_SERVER_URL") || "http://localhost:8888")
       {:ok, %Vnu.Result{messages: [
         %Vnu.Message{
           type: :info,
@@ -157,7 +157,7 @@ defmodule Vnu do
 
   ## Examples
 
-      iex> {:ok, result} = Vnu.validate_html("", server_url: "http://localhost:8888")
+      iex> {:ok, result} = Vnu.validate_html("", server_url: System.get_env("VNU_SERVER_URL") || "http://localhost:8888")
       iex> Vnu.valid?(result)
       false
 
@@ -171,7 +171,7 @@ defmodule Vnu do
       ...><body>
       ...></body>
       ...></html>
-      ...>), server_url: "http://localhost:8888")
+      ...>), server_url: System.get_env("VNU_SERVER_URL") || "http://localhost:8888")
       iex> [message] = result.messages
       iex> message.message
       "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document."

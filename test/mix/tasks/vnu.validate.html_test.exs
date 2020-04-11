@@ -1,34 +1,67 @@
 defmodule Mix.Tasks.Vnu.Validate.HtmlTest do
-  use ExUnit.Case, async: false
+  use Vnu.ServerCase
 
-  test "happy path" do
-    assert catch_exit(Mix.Tasks.Vnu.Validate.Html.run(["test/fixtures/valid.html"])) ==
-             {:shutdown, 0}
-
-    assert catch_exit(Mix.Tasks.Vnu.Validate.Html.run(["test/fixtures/warning.html"])) ==
+  test "happy path", %{opts: opts} do
+    assert catch_exit(
+             Mix.Tasks.Vnu.Validate.Html.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/valid.html"
+             ])
+           ) ==
              {:shutdown, 0}
 
     assert catch_exit(
-             Mix.Tasks.Vnu.Validate.Html.run(["test/fixtures/warning.html", "--fail-on-warnings"])
+             Mix.Tasks.Vnu.Validate.Html.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/warning.html"
+             ])
+           ) ==
+             {:shutdown, 0}
+
+    assert catch_exit(
+             Mix.Tasks.Vnu.Validate.Html.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/warning.html",
+               "--fail-on-warnings"
+             ])
            ) == {:shutdown, 1}
 
-    assert catch_exit(Mix.Tasks.Vnu.Validate.Html.run(["test/fixtures/invalid.html"])) ==
+    assert catch_exit(
+             Mix.Tasks.Vnu.Validate.Html.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/invalid.html"
+             ])
+           ) ==
              {:shutdown, 1}
 
     assert catch_exit(
              Mix.Tasks.Vnu.Validate.Html.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
                "test/fixtures/valid.html",
                "test/fixtures/invalid.html"
              ])
            ) == {:shutdown, 1}
   end
 
-  test "with a filter" do
-    assert catch_exit(Mix.Tasks.Vnu.Validate.Html.run(["test/fixtures/invalid.html"])) ==
+  test "with a filter", %{opts: opts} do
+    assert catch_exit(
+             Mix.Tasks.Vnu.Validate.Html.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/invalid.html"
+             ])
+           ) ==
              {:shutdown, 1}
 
     assert catch_exit(
              Mix.Tasks.Vnu.Validate.Html.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
                "--filter",
                "Vnu.ExcludeAllMessageFilter",
                "test/fixtures/invalid.html"

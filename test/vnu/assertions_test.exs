@@ -1,12 +1,12 @@
 defmodule Vnu.AssertionsTest do
-  use ExUnit.Case
+  use Vnu.ServerCase
   doctest Vnu.Assertions
   alias Vnu.{Formatter, Result}
 
   describe "assert_valid_html" do
-    import Vnu.Assertions, only: [assert_valid_html: 1, assert_valid_html: 2]
+    import Vnu.Assertions, only: [assert_valid_html: 2]
 
-    test "passes for valid html with only warnings" do
+    test "passes for valid html with only warnings", %{opts: opts} do
       html = """
         <!DOCTYPE html>
         <html lang="en">
@@ -17,11 +17,11 @@ defmodule Vnu.AssertionsTest do
         </html>
       """
 
-      return = assert_valid_html(html)
+      return = assert_valid_html(html, opts)
       assert return == html
     end
 
-    test "fails for valid html with only warnings when fail_on_warnings true" do
+    test "fails for valid html with only warnings when fail_on_warnings true", %{opts: opts} do
       html = """
         <!DOCTYPE html>
         <html>
@@ -32,11 +32,11 @@ defmodule Vnu.AssertionsTest do
         </html>
       """
 
-      {:ok, %Result{messages: messages}} = Vnu.validate_html(html)
+      {:ok, %Result{messages: messages}} = Vnu.validate_html(html, opts)
       messages = Enum.filter(messages, &(&1.type == :error || &1.sub_type == :warning))
 
       try do
-        assert_valid_html(html, fail_on_warnings: true)
+        assert_valid_html(html, Keyword.merge(opts, fail_on_warnings: true))
         raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
@@ -50,7 +50,7 @@ defmodule Vnu.AssertionsTest do
       end
     end
 
-    test "fails when missing title" do
+    test "fails when missing title", %{opts: opts} do
       html = """
       <!DOCTYPE html>
       <html>
@@ -60,11 +60,11 @@ defmodule Vnu.AssertionsTest do
       </html>
       """
 
-      {:ok, %Result{messages: messages}} = Vnu.validate_html(html)
+      {:ok, %Result{messages: messages}} = Vnu.validate_html(html, opts)
       errors = Enum.filter(messages, &(&1.type == :error))
 
       try do
-        assert_valid_html(html)
+        assert_valid_html(html, opts)
         raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
@@ -78,7 +78,7 @@ defmodule Vnu.AssertionsTest do
       end
     end
 
-    test "passes if all errors were filtered out" do
+    test "passes if all errors were filtered out", %{opts: opts} do
       defmodule Filter do
         @behaviour Vnu.MessageFilter
 
@@ -96,18 +96,18 @@ defmodule Vnu.AssertionsTest do
       """
 
       try do
-        assert_valid_html(html)
+        assert_valid_html(html, opts)
         raise "this line should not be reached"
       rescue
         _error in [ExUnit.AssertionError] ->
-          assert_valid_html(html, filter: Filter)
+          assert_valid_html(html, Keyword.merge(opts, filter: Filter))
 
         e ->
           reraise e, System.stacktrace()
       end
     end
 
-    test "fails when many errors and many warnings with message_print_limit" do
+    test "fails when many errors and many warnings with message_print_limit", %{opts: opts} do
       html = """
       <!DOCTYPE html>
       <html>
@@ -122,11 +122,15 @@ defmodule Vnu.AssertionsTest do
       </html>
       """
 
-      {:ok, %Result{messages: messages}} = Vnu.validate_html(html)
+      {:ok, %Result{messages: messages}} = Vnu.validate_html(html, opts)
       messages = Enum.filter(messages, &(&1.type == :error || &1.sub_type == :warning))
 
       try do
-        assert_valid_html(html, fail_on_warnings: true, message_print_limit: 3)
+        assert_valid_html(
+          html,
+          Keyword.merge(opts, fail_on_warnings: true, message_print_limit: 3)
+        )
+
         raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
@@ -142,30 +146,30 @@ defmodule Vnu.AssertionsTest do
   end
 
   describe "assert_valid_css" do
-    import Vnu.Assertions, only: [assert_valid_css: 1, assert_valid_css: 2]
+    import Vnu.Assertions, only: [assert_valid_css: 2]
 
-    test "passes for valid css" do
+    test "passes for valid css", %{opts: opts} do
       css = """
         nav { background-color: teal; }
         nav a { color: white; text-decoration: underline; }
       """
 
-      return = assert_valid_css(css)
+      return = assert_valid_css(css, opts)
       assert return == css
     end
 
-    test "fails when many errors and many warnings" do
+    test "fails when many errors and many warnings", %{opts: opts} do
       css = """
         nav { background-color: teal; }
         nav a { text-color: white; text-decoration: underline; }
         nav a:::hover { color: red }
       """
 
-      {:ok, %Result{messages: messages}} = Vnu.validate_css(css)
+      {:ok, %Result{messages: messages}} = Vnu.validate_css(css, opts)
       messages = Enum.filter(messages, &(&1.type == :error || &1.sub_type == :warning))
 
       try do
-        assert_valid_css(css, fail_on_warnings: true)
+        assert_valid_css(css, Keyword.merge(opts, fail_on_warnings: true))
         raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
@@ -181,9 +185,9 @@ defmodule Vnu.AssertionsTest do
   end
 
   describe "assert_valid_svg" do
-    import Vnu.Assertions, only: [assert_valid_svg: 1, assert_valid_svg: 2]
+    import Vnu.Assertions, only: [assert_valid_svg: 2]
 
-    test "passes for valid svg" do
+    test "passes for valid svg", %{opts: opts} do
       svg = """
       <svg width="5cm" height="4cm" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <desc>Rectangle</desc>
@@ -191,11 +195,11 @@ defmodule Vnu.AssertionsTest do
       </svg>
       """
 
-      return = assert_valid_svg(svg)
+      return = assert_valid_svg(svg, opts)
       assert return == svg
     end
 
-    test "fails when many errors and many warnings" do
+    test "fails when many errors and many warnings", %{opts: opts} do
       svg = """
       <svg width="5cm" height="4cm" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <desc>Rectangle</desc>
@@ -205,11 +209,11 @@ defmodule Vnu.AssertionsTest do
       </svg>
       """
 
-      {:ok, %Result{messages: messages}} = Vnu.validate_svg(svg)
+      {:ok, %Result{messages: messages}} = Vnu.validate_svg(svg, opts)
       messages = Enum.filter(messages, &(&1.type == :error || &1.sub_type == :warning))
 
       try do
-        assert_valid_svg(svg, fail_on_warnings: true)
+        assert_valid_svg(svg, Keyword.merge(opts, fail_on_warnings: true))
         raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->

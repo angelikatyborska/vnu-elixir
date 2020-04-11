@@ -1,11 +1,16 @@
 defmodule Vnu.CLITest do
-  use ExUnit.Case
+  use Vnu.ServerCase
   import Vnu.Formatter, only: [with_color: 2, success_color: 0]
   alias Vnu.{Result, CLI, Formatter}
 
   describe "validate html" do
-    test "no errors" do
-      assert catch_exit(CLI.validate(["test/fixtures/valid.html"], :html)) == {:shutdown, 0}
+    test "no errors", %{opts: opts} do
+      assert catch_exit(
+               CLI.validate(
+                 ["--server-url", Keyword.get(opts, :server_url), "test/fixtures/valid.html"],
+                 :html
+               )
+             ) == {:shutdown, 0}
 
       assert_received {:mix_shell, :info, ["\nValidating HTML files:"]}
       assert_received {:mix_shell, :info, ["  - test/fixtures/valid.html\n"]}
@@ -13,13 +18,18 @@ defmodule Vnu.CLITest do
       assert_received {:mix_shell, :info, ^summary}
     end
 
-    test "only warnings" do
+    test "only warnings", %{opts: opts} do
       path = "test/fixtures/warning.html"
-      {:ok, %Result{messages: [warning]}} = Vnu.validate_html(File.read!(path))
+      {:ok, %Result{messages: [warning]}} = Vnu.validate_html(File.read!(path), opts)
       [warning] = Formatter.format_messages([warning], path)
       warning = [warning <> "\n"]
 
-      assert catch_exit(CLI.validate([path], :html)) == {:shutdown, 0}
+      assert catch_exit(
+               CLI.validate(
+                 ["--server-url", Keyword.get(opts, :server_url), path],
+                 :html
+               )
+             ) == {:shutdown, 0}
 
       assert_received {:mix_shell, :info, ["\nValidating HTML files:"]}
       assert_received {:mix_shell, :info, ["  - test/fixtures/warning.html\n"]}
@@ -30,13 +40,18 @@ defmodule Vnu.CLITest do
       assert_received {:mix_shell, :info, ^summary}
     end
 
-    test "only warnings, but fail on warnings" do
+    test "only warnings, but fail on warnings", %{opts: opts} do
       path = "test/fixtures/warning.html"
-      {:ok, %Result{messages: [warning]}} = Vnu.validate_html(File.read!(path))
+      {:ok, %Result{messages: [warning]}} = Vnu.validate_html(File.read!(path), opts)
       [warning] = Formatter.format_messages([warning], path)
       warning = [warning <> "\n"]
 
-      assert catch_exit(CLI.validate(["--fail-on-warnings", path], :html)) == {:shutdown, 1}
+      assert catch_exit(
+               CLI.validate(
+                 ["--server-url", Keyword.get(opts, :server_url), "--fail-on-warnings", path],
+                 :html
+               )
+             ) == {:shutdown, 1}
 
       assert_received {:mix_shell, :info, ["\nValidating HTML files:"]}
       assert_received {:mix_shell, :info, ["  - test/fixtures/warning.html\n"]}
@@ -56,16 +71,21 @@ defmodule Vnu.CLITest do
       assert_received {:mix_shell, :info, ^summary}
     end
 
-    test "many files, many errors" do
+    test "many files, many errors", %{opts: opts} do
       path1 = "test/fixtures/valid.html"
       path2 = "test/fixtures/warning.html"
       path3 = "test/fixtures/invalid.html"
-      {:ok, %Result{messages: messages2}} = Vnu.validate_html(File.read!(path2))
-      {:ok, %Result{messages: messages3}} = Vnu.validate_html(File.read!(path3))
+      {:ok, %Result{messages: messages2}} = Vnu.validate_html(File.read!(path2), opts)
+      {:ok, %Result{messages: messages3}} = Vnu.validate_html(File.read!(path3), opts)
       messages2 = (Formatter.format_messages(messages2, path2) |> Enum.join("\n\n")) <> "\n"
       messages3 = (Formatter.format_messages(messages3, path3) |> Enum.join("\n\n")) <> "\n"
 
-      assert catch_exit(CLI.validate([path1, path2, path3], :html)) == {:shutdown, 1}
+      assert catch_exit(
+               CLI.validate(
+                 ["--server-url", Keyword.get(opts, :server_url), path1, path2, path3],
+                 :html
+               )
+             ) == {:shutdown, 1}
 
       assert_received {:mix_shell, :info, ["\nValidating HTML files:"]}
 
@@ -104,8 +124,13 @@ defmodule Vnu.CLITest do
   end
 
   describe "validate css" do
-    test "no errors" do
-      assert catch_exit(CLI.validate(["test/fixtures/valid.css"], :css)) == {:shutdown, 0}
+    test "no errors", %{opts: opts} do
+      assert catch_exit(
+               CLI.validate(
+                 ["--server-url", Keyword.get(opts, :server_url), "test/fixtures/valid.css"],
+                 :css
+               )
+             ) == {:shutdown, 0}
 
       assert_received {:mix_shell, :info, ["\nValidating CSS files:"]}
       assert_received {:mix_shell, :info, ["  - test/fixtures/valid.css\n"]}
@@ -115,8 +140,13 @@ defmodule Vnu.CLITest do
   end
 
   describe "validate svg" do
-    test "no errors" do
-      assert catch_exit(CLI.validate(["test/fixtures/valid.svg"], :svg)) == {:shutdown, 0}
+    test "no errors", %{opts: opts} do
+      assert catch_exit(
+               CLI.validate(
+                 ["--server-url", Keyword.get(opts, :server_url), "test/fixtures/valid.svg"],
+                 :svg
+               )
+             ) == {:shutdown, 0}
 
       assert_received {:mix_shell, :info, ["\nValidating SVG files:"]}
       assert_received {:mix_shell, :info, ["  - test/fixtures/valid.svg\n"]}

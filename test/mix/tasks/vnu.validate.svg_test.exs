@@ -1,15 +1,29 @@
 defmodule Mix.Tasks.Vnu.Validate.SvgTest do
-  use ExUnit.Case
+  use Vnu.ServerCase
 
-  test "happy path" do
-    assert catch_exit(Mix.Tasks.Vnu.Validate.Svg.run(["test/fixtures/valid.svg"])) ==
+  test "happy path", %{opts: opts} do
+    assert catch_exit(
+             Mix.Tasks.Vnu.Validate.Svg.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/valid.svg"
+             ])
+           ) ==
              {:shutdown, 0}
 
-    assert catch_exit(Mix.Tasks.Vnu.Validate.Svg.run(["test/fixtures/invalid.svg"])) ==
+    assert catch_exit(
+             Mix.Tasks.Vnu.Validate.Svg.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/invalid.svg"
+             ])
+           ) ==
              {:shutdown, 1}
 
     assert catch_exit(
              Mix.Tasks.Vnu.Validate.Svg.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
                "test/fixtures/valid.svg",
                "test/fixtures/invalid.svg"
              ])

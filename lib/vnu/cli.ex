@@ -89,6 +89,7 @@ defmodule Vnu.CLI do
     end
   end
 
+  @spec handle_total_counts(map(), map(), boolean()) :: no_return()
   defp handle_total_counts(results, total_counts, fail_on_warnings?) do
     case total_counts do
       %{error_count: 0, warning_count: 0} ->

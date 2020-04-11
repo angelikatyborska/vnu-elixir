@@ -1,15 +1,29 @@
 defmodule Mix.Tasks.Vnu.Validate.CssTest do
-  use ExUnit.Case
+  use Vnu.ServerCase
 
-  test "happy path" do
-    assert catch_exit(Mix.Tasks.Vnu.Validate.Css.run(["test/fixtures/valid.css"])) ==
+  test "happy path", %{opts: opts} do
+    assert catch_exit(
+             Mix.Tasks.Vnu.Validate.Css.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/valid.css"
+             ])
+           ) ==
              {:shutdown, 0}
 
-    assert catch_exit(Mix.Tasks.Vnu.Validate.Css.run(["test/fixtures/invalid.css"])) ==
+    assert catch_exit(
+             Mix.Tasks.Vnu.Validate.Css.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
+               "test/fixtures/invalid.css"
+             ])
+           ) ==
              {:shutdown, 1}
 
     assert catch_exit(
              Mix.Tasks.Vnu.Validate.Css.run([
+               "--server-url",
+               Keyword.get(opts, :server_url),
                "test/fixtures/valid.css",
                "test/fixtures/invalid.css"
              ])
