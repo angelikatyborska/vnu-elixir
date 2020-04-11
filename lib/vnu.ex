@@ -68,6 +68,15 @@ defmodule Vnu do
   end
 
   @doc ~S"""
+  Same as `validate_svg/2` but returns %Vnu.Result{} or raises `%Vnu.Error{}`.
+  """
+
+  @spec validate_html!(String.t(), Keyword.t()) :: Result.t() | no_return()
+  def validate_html!(html, opts \\ []) when is_bitstring(html) and is_list(opts) do
+    Validator.validate!(html, Keyword.merge(opts, format: :html))
+  end
+
+  @doc ~S"""
   Validates the given CSS document.
 
   See `validate_html/2` for the list of options and other details.
@@ -99,6 +108,15 @@ defmodule Vnu do
   @spec validate_css(String.t(), Keyword.t()) :: {:ok, Result.t()} | {:error, Error.t()}
   def validate_css(css, opts \\ []) when is_bitstring(css) and is_list(opts) do
     Validator.validate(css, Keyword.merge(opts, format: :css))
+  end
+
+  @doc ~S"""
+  Same as `validate_css/2` but returns %Vnu.Result{} or raises `%Vnu.Error{}`.
+  """
+
+  @spec validate_css!(String.t(), Keyword.t()) :: Result.t() | no_return()
+  def validate_css!(css, opts \\ []) when is_bitstring(css) and is_list(opts) do
+    Validator.validate!(css, Keyword.merge(opts, format: :css))
   end
 
   @doc ~S"""
@@ -145,6 +163,15 @@ defmodule Vnu do
   @spec validate_svg(String.t(), Keyword.t()) :: {:ok, Result.t()} | {:error, Error.t()}
   def validate_svg(svg, opts \\ []) when is_bitstring(svg) and is_list(opts) do
     Validator.validate(svg, Keyword.merge(opts, format: :svg))
+  end
+
+  @doc ~S"""
+  Same as `validate_svg/2` but returns %Vnu.Result{} or raises `%Vnu.Error{}`.
+  """
+
+  @spec validate_svg!(String.t(), Keyword.t()) :: Result.t() | no_return()
+  def validate_svg!(svg, opts \\ []) when is_bitstring(svg) and is_list(opts) do
+    Validator.validate!(svg, Keyword.merge(opts, format: :svg))
   end
 
   @doc ~S"""

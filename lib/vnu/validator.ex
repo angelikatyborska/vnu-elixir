@@ -13,6 +13,14 @@ defmodule Vnu.Validator do
   end
 
   @doc false
+  def validate!(string, opts) do
+    case validate(string, opts) do
+      {:ok, result} -> result
+      {:error, %Error{} = error} -> raise error
+    end
+  end
+
+  @doc false
   def validate(string, opts) do
     with {:ok, config} <- Config.new(opts),
          {:ok, %Result{} = response} <- HTTP.get_result(string, config),
