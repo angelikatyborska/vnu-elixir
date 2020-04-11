@@ -12,6 +12,7 @@ defmodule Vnu.MixProject do
       aliases: aliases(),
       docs: [extras: ["README.md", "CHANGELOG.md"]],
       dialyzer: [plt_add_apps: [:mix, :ex_unit]],
+      description: description(),
       package: package(),
       name: "Vnu",
       source_url: "https://github.com/angelikatyborska/vnu-elixir/"
@@ -41,13 +42,13 @@ defmodule Vnu.MixProject do
   end
 
   defp description() do
-    "A few sentences (a paragraph) describing the project."
+    "An Elixir client for the Nu HTML Checker (validator.w3.org/nu). Offers validating HTML, CSS, and SVG documents."
   end
 
   defp package() do
     [
       name: "vnu",
-      files: ~w(lib priv .formatter.exs mix.exs README* LICENSE* CHANGELOG*),
+      files: ~w(lib .formatter.exs mix.exs README* LICENSE* CHANGELOG*),
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/angelikatyborska/vnu-elixir"}
     ]

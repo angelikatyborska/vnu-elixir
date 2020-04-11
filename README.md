@@ -1,4 +1,4 @@
-# Vnu [WORK IN PROGRESS] [![angelikatyborska](https://circleci.com/gh/angelikatyborska/vnu-elixir.svg?style=shield)](https://circleci.com/gh/angelikatyborska/vnu-elixir)
+# Vnu [![angelikatyborska](https://circleci.com/gh/angelikatyborska/vnu-elixir.svg?style=shield)](https://circleci.com/gh/angelikatyborska/vnu-elixir)
 
 An Elixir client for [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/).
 
@@ -41,17 +41,11 @@ defp deps do
 end
 ```
 
-(TODO: release to hex, add changelog)
-
 And run:
 
 ```bash
 $ mix deps.get
 ```
-
-## Documentation
-
-... (TODO: put hexdocs.pm link here)
 
 ## Usage
 
