@@ -31,12 +31,12 @@ HTTP/1.1 200 OK
 
 Make sure to read about the [prerequisites](#prerequisites) first.
 
-Add `:vnu` as a dependency to your project's `mix.exs`:
+Add Vnu as a dependency to your project's `mix.exs`:
 
 ```elixir
 defp deps do
   [
-    {:vnu, github: "angelikatyborska/vnu-elixir", only: [:dev, :test], runtime: false}
+    {:vnu, "~> 1.0.0-rc.1", only: [:dev, :test], runtime: false}
   ]
 end
 ```
@@ -46,6 +46,10 @@ And run:
 ```bash
 $ mix deps.get
 ```
+
+## Documentation
+
+[Available on hexdocs.pm](https://hexdocs.pm/vnu/api-reference.html).
 
 ## Usage
 
