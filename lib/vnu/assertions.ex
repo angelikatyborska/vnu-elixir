@@ -1,91 +1,7 @@
 defmodule Vnu.Assertions do
   @moduledoc "ExUnit assertions for checking the validity of HTML, CSS, and SVG documents."
 
-  alias Vnu.{Formatter, CLI}
-
-  @doc false
-  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
-  defp assert_valid(string, format, opts \\ []) do
-    quote do
-      {validate_function, label} = CLI.format_to_function_and_pretty_name(unquote(format))
-
-      case validate_function.(unquote(string), unquote(opts)) do
-        {:ok, result} ->
-          if Vnu.valid?(result, unquote(opts)) do
-            unquote(string)
-          else
-            fail_on_warnings? = Keyword.get(unquote(opts), :fail_on_warnings, false)
-            message_print_limit = Keyword.get(unquote(opts), :message_print_limit, :infinity)
-            grouped = Enum.group_by(result.messages, & &1.type)
-
-            errors = Map.get(grouped, :error, [])
-            infos = Map.get(grouped, :info, [])
-            warnings = Enum.filter(infos, &(&1.sub_type == :warning))
-            error_count = Enum.count(errors)
-            warning_count = Enum.count(warnings)
-            counts = %{error_count: error_count, warning_count: warning_count, info_count: nil}
-
-            format_count_opts = [
-              exclude_zeros: true,
-              exclude_infos: true,
-              with_colors: false
-            ]
-
-            {messages, expected_string} =
-              if fail_on_warnings? do
-                {errors ++ warnings, Formatter.format_counts(counts, format_count_opts)}
-              else
-                {errors,
-                 Formatter.format_counts(
-                   counts,
-                   Keyword.merge(format_count_opts, exclude_warnings: true)
-                 )}
-              end
-
-            {messages_to_be_printed, omitted_messages_number} =
-              if message_print_limit != :infinity && message_print_limit < Enum.count(messages) do
-                {Enum.take(Formatter.sort(messages), message_print_limit),
-                 Enum.count(messages) - message_print_limit}
-              else
-                {messages, 0}
-              end
-
-            messages_string =
-              Formatter.format_messages(messages_to_be_printed)
-              |> Enum.join("\n\n")
-
-            error_message = """
-            Expected the #{label} document to be valid, but got #{expected_string}
-
-            #{messages_string}
-            """
-
-            error_message =
-              if omitted_messages_number > 0 do
-                error_message <> "\n...and #{omitted_messages_number} more.\n"
-              else
-                error_message
-              end
-
-            raise ExUnit.AssertionError,
-              message: error_message
-          end
-
-        {:error, error} ->
-          reason =
-            case error.reason do
-              :unexpected_server_response -> "an unexpected response from the server"
-              :invalid_config -> "an invalid configuration"
-            end
-
-          raise ExUnit.AssertionError,
-            message: """
-            Could not validate the #{label} document due to #{reason}:
-            "#{error.message}"
-            """
-      end
-    end
-  end
+  alias Vnu.{CLI, Formatter}
 
   @doc """
   Asserts that the given HTML document is valid.
@@ -100,7 +16,7 @@ defmodule Vnu.Assertions do
   - `:message_print_limit` - The maximum number of validation messages that will me printed in the error when the assertion fails.
     Can be an integer or `:infinity`. Defaults to `:infinity`.
   """
-  defmacro assert_valid_html(html, opts \\ []) do
+  def assert_valid_html(html, opts \\ []) do
     assert_valid(html, :html, opts)
   end
 
@@ -109,7 +25,7 @@ defmodule Vnu.Assertions do
 
   See `assert_valid_html/2` for the list of options and other details.
   """
-  defmacro assert_valid_css(css, opts \\ []) do
+  def assert_valid_css(css, opts \\ []) do
     assert_valid(css, :css, opts)
   end
 
@@ -118,7 +34,89 @@ defmodule Vnu.Assertions do
 
   See `assert_valid_html/2` for the list of options and other details.
   """
-  defmacro assert_valid_svg(svg, opts \\ []) do
+  def assert_valid_svg(svg, opts \\ []) do
     assert_valid(svg, :svg, opts)
+  end
+
+  @doc false
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
+  defp assert_valid(string, format, opts) do
+    {validate_function, label} = CLI.format_to_function_and_pretty_name(format)
+
+    case validate_function.(string, opts) do
+      {:ok, result} ->
+        if Vnu.valid?(result, opts) do
+          string
+        else
+          fail_on_warnings? = Keyword.get(opts, :fail_on_warnings, false)
+          message_print_limit = Keyword.get(opts, :message_print_limit, :infinity)
+          grouped = Enum.group_by(result.messages, & &1.type)
+
+          errors = Map.get(grouped, :error, [])
+          infos = Map.get(grouped, :info, [])
+          warnings = Enum.filter(infos, &(&1.sub_type == :warning))
+          error_count = Enum.count(errors)
+          warning_count = Enum.count(warnings)
+          counts = %{error_count: error_count, warning_count: warning_count, info_count: nil}
+
+          format_count_opts = [
+            exclude_zeros: true,
+            exclude_infos: true,
+            with_colors: false
+          ]
+
+          {messages, expected_string} =
+            if fail_on_warnings? do
+              {errors ++ warnings, Formatter.format_counts(counts, format_count_opts)}
+            else
+              {errors,
+               Formatter.format_counts(
+                 counts,
+                 Keyword.merge(format_count_opts, exclude_warnings: true)
+               )}
+            end
+
+          {messages_to_be_printed, omitted_messages_number} =
+            if message_print_limit != :infinity && message_print_limit < Enum.count(messages) do
+              {Enum.take(Formatter.sort(messages), message_print_limit),
+               Enum.count(messages) - message_print_limit}
+            else
+              {messages, 0}
+            end
+
+          messages_string =
+            Formatter.format_messages(messages_to_be_printed)
+            |> Enum.join("\n\n")
+
+          error_message = """
+          Expected the #{label} document to be valid, but got #{expected_string}
+
+          #{messages_string}
+          """
+
+          error_message =
+            if omitted_messages_number > 0 do
+              error_message <> "\n...and #{omitted_messages_number} more.\n"
+            else
+              error_message
+            end
+
+          raise ExUnit.AssertionError,
+            message: error_message
+        end
+
+      {:error, error} ->
+        reason =
+          case error.reason do
+            :unexpected_server_response -> "an unexpected response from the server"
+            :invalid_config -> "an invalid configuration"
+          end
+
+        raise ExUnit.AssertionError,
+          message: """
+          Could not validate the #{label} document due to #{reason}:
+          "#{error.message}"
+          """
+    end
   end
 end
