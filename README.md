@@ -2,9 +2,17 @@
 
 An Elixir client for [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/).
 
+[v.Nu](https://validator.w3.org/nu/) is a document validity checker used by the W3C.
+It offers validating HTML, CSS, and SVG documents.
+
+This library brings that functionality to Elixir by using the Checker's JSON API.
+It offers ExUnit assertions for validating dynamic content in tests, Mix tasks for validating static content, and general purpose functions to fulfill other needs.
+
 ## Prerequisites
 
-You will need your own copy of the Nu HTML Checker.
+While it is possible to use this library with the service run by W3C at [validator.w3.org/nu/](https://validator.w3.org/nu/),
+I would recommend running your own instance. You will eliminate a lot of network latency if it runs on the same machine as your code, and you will not hit any rate limits that might exist for [validator.w3.org/nu/](https://validator.w3.org/nu/).
+
 The source of the Checker can be found in the repository [validator/validator](https://github.com/validator/validator).
 Follow their instructions on how to download it and [run it as a web server](https://github.com/validator/validator#standalone-web-server).
 
@@ -143,13 +151,39 @@ iex> Vnu.valid?(result)
 false
 ```
 
-## Contributing
+## Development
 
-... (TODO: describe)
+Make sure to read about the [prerequisites](#prerequisites) first.
+
+After cloning the repository, run `mix deps.get` and you should be ready for development.
+
+To ensure code consistency, run `mix format`, `mix credo`, and `mix dialyzer`.
 
 ### Running tests
 
-... (TODO: describe)
+All test that expect to talk with the server accept the server's URL as an `VNU_SERVER_URL` environment variable or fallback to the default `http://localhost:8888`.
+
+```bash
+$ VNU_SERVER_URL=https://validator.w3.org/nu/ mix test 
+```
+
+If you're adding a new test, make sure it will do that do.
+
+## Contributing
+
+### Issues
+
+If you noticed a problem with the library or its documentation, or have an idea for a feature, [open an issue](https://github.com/angelikatyborska/vnu-elixir/issues/new).
+
+If you have an idea on how to act upon the problem or idea, feel free to open a pull request instead.
+
+### Pull requests
+
+If you noticed a problem with the library or its documentation and know how to fix it, or have an idea for a feature, open a pull request.
+
+If you are not sure of your changes or need help finishing them, open a pull request anyway.
+
+If you want to fix a typo anywhere in the repo, open a pull request.
 
 ## License
 

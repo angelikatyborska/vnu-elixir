@@ -1,4 +1,6 @@
 defmodule Vnu.ServerCase do
+  @moduledoc false
+
   use ExUnit.CaseTemplate
 
   setup _tags do

@@ -11,7 +11,8 @@ defmodule Vnu.MixProject do
       deps: deps(),
       aliases: aliases(),
       docs: [extras: ["README.md"]],
-      dialyzer: [plt_add_apps: [:mix]]
+      dialyzer: [plt_add_apps: [:mix, :ex_unit]],
+      source_url: "https://github.com/angelikatyborska/vnu-elixir/"
     ]
   end
 
