@@ -1,4 +1,4 @@
-# Vnu
+# Vnu [WORK IN PROGRESS]
 
 An Elixir client for [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/).
 
@@ -32,6 +32,8 @@ defp deps do
   ]
 end
 ```
+
+(TODO: release to hex, add changelog)
 
 And run:
 
@@ -143,7 +145,11 @@ false
 
 ## Contributing
 
-...
+... (TODO: describe)
+
+### Running tests
+
+... (TODO: describe)
 
 ## License
 
