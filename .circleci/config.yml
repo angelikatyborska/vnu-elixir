@@ -1,0 +1,67 @@
+version: 2.1
+
+executors:
+  elixir-10:
+    docker:
+      - image: circleci/elixir:1.10
+      - image: validator/validator:latest
+    environment:
+      VNU_SERVER_URL: http://localhost:8888/
+
+  elixir-9:
+    docker:
+      - image: circleci/elixir:1.9
+      - image: validator/validator:latest
+    environment:
+      VNU_SERVER_URL: http://localhost:8888/
+
+  elixir-8:
+    docker:
+      - image: circleci/elixir:1.8
+      - image: validator/validator:latest
+    environment:
+      VNU_SERVER_URL: http://localhost:8888/
+
+commands:
+  do_everything:
+    steps:
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+      - run: mix deps.get
+      - run: mix compile --warnings-as-errors --force
+      - run: mix format --check-formatted
+      - run: mix test
+
+jobs:
+  test-elixir-10:
+    executor: elixir-10
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - do_everything
+
+  test-elixir-9:
+    executor: elixir-9
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - do_everything
+
+  test-elixir-8:
+    executor: elixir-8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - do_everything
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test-elixir-10
+      - test-elixir-9:
+          requires:
+            - test-elixir-10
+      - test-elixir-8:
+          requires:
+            - test-elixir-10
