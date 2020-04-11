@@ -37,7 +37,7 @@ end
 
 And run:
 
-```
+```bash
 $ mix deps.get
 ```
 

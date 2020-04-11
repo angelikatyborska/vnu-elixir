@@ -21,6 +21,7 @@ defmodule PhoenixAppWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
+      import Vnu.Assertions, only: [assert_valid_html: 2]
       alias PhoenixAppWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing

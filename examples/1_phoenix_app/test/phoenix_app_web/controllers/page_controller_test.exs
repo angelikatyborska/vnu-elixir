@@ -1,6 +1,5 @@
 defmodule PhoenixAppWeb.PageControllerTest do
   use PhoenixAppWeb.ConnCase
-  import Vnu.Assertions
 
   test "GET /", %{conn: conn, vnu_opts: vnu_opts} do
     conn = get(conn, "/")
@@ -9,7 +8,10 @@ defmodule PhoenixAppWeb.PageControllerTest do
       conn
       |> html_response(200)
       |> assert_valid_html(
-        Keyword.merge(vnu_opts, fail_on_warnings: false, filter: PhoenixAppWeb.VnuHTMLMessageFilter)
+        Keyword.merge(vnu_opts,
+          fail_on_warnings: false,
+          filter: PhoenixAppWeb.VnuHTMLMessageFilter
+        )
       )
 
     assert html_response =~ "Welcome to Phoenix!"

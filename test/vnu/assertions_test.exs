@@ -1,10 +1,11 @@
 defmodule Vnu.AssertionsTest do
   use ExUnit.Case
   doctest Vnu.Assertions
-  import Vnu.Assertions
   alias Vnu.{Formatter, Result}
 
   describe "assert_valid_html" do
+    import Vnu.Assertions, only: [assert_valid_html: 1, assert_valid_html: 2]
+
     test "passes for valid html with only warnings" do
       html = """
         <!DOCTYPE html>
@@ -141,6 +142,8 @@ defmodule Vnu.AssertionsTest do
   end
 
   describe "assert_valid_css" do
+    import Vnu.Assertions, only: [assert_valid_css: 1, assert_valid_css: 2]
+
     test "passes for valid css" do
       css = """
         nav { background-color: teal; }
@@ -178,6 +181,8 @@ defmodule Vnu.AssertionsTest do
   end
 
   describe "assert_valid_svg" do
+    import Vnu.Assertions, only: [assert_valid_svg: 1, assert_valid_svg: 2]
+
     test "passes for valid svg" do
       svg = """
       <svg width="5cm" height="4cm" version="1.1" xmlns="http://www.w3.org/2000/svg">

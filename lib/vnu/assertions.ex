@@ -5,14 +5,13 @@ defmodule Vnu.Assertions do
 
   @doc false
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
-  defmacro assert_valid(string, format, opts \\ []) do
+  defp assert_valid(string, format, opts \\ []) do
     quote do
       {validate_function, label} = CLI.format_to_function_and_pretty_name(unquote(format))
 
       case validate_function.(unquote(string), unquote(opts)) do
         {:ok, result} ->
           if Vnu.valid?(result, unquote(opts)) do
-            assert true
             unquote(string)
           else
             fail_on_warnings? = Keyword.get(unquote(opts), :fail_on_warnings, false)
@@ -68,7 +67,8 @@ defmodule Vnu.Assertions do
                 error_message
               end
 
-            flunk(error_message)
+            raise ExUnit.AssertionError,
+              message: error_message
           end
 
         {:error, error} ->
@@ -78,10 +78,11 @@ defmodule Vnu.Assertions do
               :invalid_config -> "an invalid configuration"
             end
 
-          flunk("""
-          Could not validate the #{label} document due to #{reason}:
-          "#{error.message}"
-          """)
+          raise ExUnit.AssertionError,
+            message: """
+            Could not validate the #{label} document due to #{reason}:
+            "#{error.message}"
+            """
       end
     end
   end
@@ -100,9 +101,7 @@ defmodule Vnu.Assertions do
     Can be an integer or `:infinity`. Defaults to `:infinity`.
   """
   defmacro assert_valid_html(html, opts \\ []) do
-    quote do
-      assert_valid(unquote(html), :html, unquote(opts))
-    end
+    assert_valid(html, :html, opts)
   end
 
   @doc """
@@ -111,9 +110,7 @@ defmodule Vnu.Assertions do
   See `assert_valid_html/2` for the list of options and other details.
   """
   defmacro assert_valid_css(css, opts \\ []) do
-    quote do
-      assert_valid(unquote(css), :css, unquote(opts))
-    end
+    assert_valid(css, :css, opts)
   end
 
   @doc """
@@ -122,8 +119,6 @@ defmodule Vnu.Assertions do
   See `assert_valid_html/2` for the list of options and other details.
   """
   defmacro assert_valid_svg(svg, opts \\ []) do
-    quote do
-      assert_valid(unquote(svg), :svg, unquote(opts))
-    end
+    assert_valid(svg, :svg, opts)
   end
 end
