@@ -4,14 +4,16 @@ defmodule Vnu.MixProject do
   def project do
     [
       app: :vnu,
-      version: "0.1.0",
+      version: "1.0.0-rc.1",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       aliases: aliases(),
-      docs: [extras: ["README.md"]],
+      docs: [extras: ["README.md", "CHANGELOG.md"]],
       dialyzer: [plt_add_apps: [:mix, :ex_unit]],
+      package: package(),
+      name: "Vnu",
       source_url: "https://github.com/angelikatyborska/vnu-elixir/"
     ]
   end
@@ -35,6 +37,19 @@ defmodule Vnu.MixProject do
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
       {:bypass, "~> 1.0", only: [:test]}
+    ]
+  end
+
+  defp description() do
+    "A few sentences (a paragraph) describing the project."
+  end
+
+  defp package() do
+    [
+      name: "vnu",
+      files: ~w(lib priv .formatter.exs mix.exs README* LICENSE* CHANGELOG*),
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/angelikatyborska/vnu-elixir"}
     ]
   end
 

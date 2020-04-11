@@ -114,7 +114,8 @@ If you need HTML, CSS, or SVG validation for something else, try one of those fu
 - `Vnu.validate_svg/2`
 
 ```elixir
-iex> {:ok, result} = Vnu.validate_html("<!DOCTYPE html><html><head></head></html>", server_url: "http://localhost:8888")
+iex> {:ok, result} = Vnu.validate_html("<!DOCTYPE html><html><head></head></html>",
+  server_url: "http://localhost:8888")
 {:ok,
  %Vnu.Result{
    messages: [
@@ -164,7 +165,7 @@ To ensure code consistency, run `mix format`, `mix credo`, and `mix dialyzer`.
 All test that expect to talk with the server accept the server's URL as an `VNU_SERVER_URL` environment variable or fallback to the default `http://localhost:8888`.
 
 ```bash
-$ VNU_SERVER_URL=https://validator.w3.org/nu/ mix test 
+$ VNU_SERVER_URL=http://localhost:4000/ mix test 
 ```
 
 If you're adding a new test, make sure it will do that do.
@@ -179,11 +180,9 @@ If you have an idea on how to act upon the problem or idea, feel free to open a 
 
 ### Pull requests
 
-If you noticed a problem with the library or its documentation and know how to fix it, or have an idea for a feature, open a pull request.
+If you noticed a problem with the library or its documentation and know how to fix it, or have an idea for a feature, or want to fix a typo, [open a pull request](https://github.com/angelikatyborska/vnu-elixir/pull/new/master).
 
-If you are not sure of your changes or need help finishing them, open a pull request anyway.
-
-If you want to fix a typo anywhere in the repo, open a pull request.
+If you are not sure of your changes or need help finishing them, open a pull request anyway. I'll try to help!
 
 ## License
 
