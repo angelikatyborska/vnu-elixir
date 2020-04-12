@@ -25,12 +25,21 @@ executors:
 commands:
   do_everything:
     steps:
-      - run: mix local.hex --force
-      - run: mix local.rebar --force
+      - run: mix local.hex --force && mix local.rebar --force
       - run: mix deps.get
       - run: mix compile --warnings-as-errors --force
       - run: mix format --check-formatted
       - run: mix test
+      - run:
+          name: mix deps.get (with older deps)
+          command: mix deps.get
+          environment:
+            - WITH_OLDER_DEPS: true
+      - run:
+          name: mix test (with older deps)
+          command: mix test
+          environment:
+            - WITH_OLDER_DEPS: true
 
 jobs:
   test-elixir-10:

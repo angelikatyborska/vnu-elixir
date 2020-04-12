@@ -6,6 +6,7 @@ defmodule Vnu.MixProject do
       app: :vnu,
       version: "1.0.0-rc.1",
       elixir: "~> 1.8",
+      lockfile: lockfile(),
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
@@ -26,14 +27,22 @@ defmodule Vnu.MixProject do
     ]
   end
 
+  defp lockfile() do
+    if !!System.get_env("WITH_OLDER_DEPS") do
+      "mix-older-deps.lock"
+    else
+      "mix.lock"
+    end
+  end
+
   defp elixirc_paths(:test), do: ["test/support" | elixirc_paths(:any)]
   defp elixirc_paths(_), do: ["lib", "test/fixtures"]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 1.6"},
-      {:jason, "~> 1.2"},
+      {:httpoison, "~> 1.0"},
+      {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
@@ -50,7 +59,10 @@ defmodule Vnu.MixProject do
       name: "vnu",
       files: ~w(lib .formatter.exs mix.exs README* LICENSE* CHANGELOG*),
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/angelikatyborska/vnu-elixir"}
+      links: %{
+        "GitHub" => "https://github.com/angelikatyborska/vnu-elixir",
+        "Changelog" => "https://github.com/angelikatyborska/vnu-elixir/blob/master/CHANGELOG.md"
+      }
     ]
   end
 
