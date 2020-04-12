@@ -1,4 +1,10 @@
 # Changelog
 
-# 1.0.0-rc.1 (2020-04-11)
+## [Unreleased]
+
+### Changed
+- When used incorrectly, instead of custom usage info, mix tasks will print the same message as running `mix help ...` would print
+- Lowered required `httpoison` and `jason` versions to `~> 1.0`
+
+## 1.0.0-rc.1 (2020-04-11)
 - Initial release candidate
