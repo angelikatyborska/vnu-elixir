@@ -71,6 +71,7 @@ jobs:
     executor: elixir-8
     working_directory: ~/repo
     steps:
+      - checkout
       - test
       - test_with_older_deps
 
