@@ -6,7 +6,13 @@ defmodule Mix.Tasks.Vnu.Validate.Svg do
   @moduledoc """
   Validates SVG files.
 
-  See `Mix.Tasks.Vnu.Validate.Html` for the list of options and other details.
+  It expects a file or a list of files as an argument.
+
+  ```bash
+    mix vnu.validate.svg [OPTIONS] FILE [FILE2 FILE3...]
+  ```
+
+  See `mix vnu.validate.html` for the list of options and other details.
 
   Examples
 

@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Vnu.Validate.SvgTest do
   use Vnu.ServerCase
+  import ExUnit.CaptureIO
 
   test "happy path", %{opts: opts} do
     assert catch_exit(
@@ -37,20 +38,18 @@ defmodule Mix.Tasks.Vnu.Validate.SvgTest do
   end
 
   test "requires some files" do
-    assert_raise Mix.Error, "No files given", fn ->
-      Mix.Tasks.Vnu.Validate.Svg.run([])
-    end
-
-    usage_info = Vnu.CLI.usage_info(:svg)
-    assert_received {:mix_shell, :info, [^usage_info]}
+    assert capture_io(fn ->
+             assert_raise Mix.Error, "No files given", fn ->
+               Mix.Tasks.Vnu.Validate.Svg.run([])
+             end
+           end) == capture_io(fn -> Mix.Tasks.Help.run(["vnu.validate.svg"]) end)
   end
 
   test "requires valid options" do
-    assert_raise Mix.Error, "Invalid options: [{\"--banana\", nil}]", fn ->
-      Mix.Tasks.Vnu.Validate.Svg.run(["--banana"])
-    end
-
-    usage_info = Vnu.CLI.usage_info(:svg)
-    assert_received {:mix_shell, :info, [^usage_info]}
+    assert capture_io(fn ->
+             assert_raise Mix.Error, "Invalid options: [{\"--banana\", nil}]", fn ->
+               Mix.Tasks.Vnu.Validate.Svg.run(["--banana"])
+             end
+           end) == capture_io(fn -> Mix.Tasks.Help.run(["vnu.validate.svg"]) end)
   end
 end

@@ -6,7 +6,13 @@ defmodule Mix.Tasks.Vnu.Validate.Css do
   @moduledoc """
   Validates CSS files.
 
-  See `Mix.Tasks.Vnu.Validate.Html` for the list of options and other details.
+  It expects a file or a list of files as an argument.
+
+  ```bash
+    mix vnu.validate.css [OPTIONS] FILE [FILE2 FILE3...]
+  ```
+
+  See `mix vnu.validate.html` for the list of options and other details.
 
   Examples
   ```bash

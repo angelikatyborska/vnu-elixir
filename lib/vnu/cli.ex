@@ -110,29 +110,9 @@ defmodule Vnu.CLI do
     end
   end
 
-  @doc false
-  def usage_info(format) do
-    """
-    mix vnu.validate.#{format} [options] file1 [file2, file3...]
-
-    Options:
-      --server-url [string]
-          The URL of the Checker server. Defaults to `http://localhost:8888`.
-
-      --fail-on-warnings, --no-fail-on-warnings
-          Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
-
-      --filter [string]
-          A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
-
-    Example:
-      mix vnu.validate.#{format} --server-url localhost:8888 priv/static/**/*.#{format}
-    """
-  end
-
   @spec print_usage_info(atom()) :: no_return()
   defp print_usage_info(format) do
-    Mix.shell().info(usage_info(format))
+    Mix.Tasks.Help.run(["vnu.validate.#{format}"])
   end
 
   @spec exit_all_valid() :: no_return()
