@@ -68,7 +68,7 @@ defmodule Vnu do
   end
 
   @doc ~S"""
-  Same as `validate_svg/2` but returns %Vnu.Result{} or raises `%Vnu.Error{}`.
+  Same as `validate_svg/2` but returns `%Vnu.Result{}` or raises `%Vnu.Error{}`.
   """
 
   @spec validate_html!(String.t(), Keyword.t()) :: Result.t() | no_return()
@@ -111,7 +111,7 @@ defmodule Vnu do
   end
 
   @doc ~S"""
-  Same as `validate_css/2` but returns %Vnu.Result{} or raises `%Vnu.Error{}`.
+  Same as `validate_css/2` but returns `%Vnu.Result{}` or raises `%Vnu.Error{}`.
   """
 
   @spec validate_css!(String.t(), Keyword.t()) :: Result.t() | no_return()
@@ -166,7 +166,7 @@ defmodule Vnu do
   end
 
   @doc ~S"""
-  Same as `validate_svg/2` but returns %Vnu.Result{} or raises `%Vnu.Error{}`.
+  Same as `validate_svg/2` but returns `%Vnu.Result{}` or raises `%Vnu.Error{}`.
   """
 
   @spec validate_svg!(String.t(), Keyword.t()) :: Result.t() | no_return()
