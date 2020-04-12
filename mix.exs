@@ -16,7 +16,15 @@ defmodule Vnu.MixProject do
       description: description(),
       package: package(),
       name: "Vnu",
-      source_url: "https://github.com/angelikatyborska/vnu-elixir/"
+      source_url: "https://github.com/angelikatyborska/vnu-elixir/",
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        "coveralls.circle": :test
+      ]
     ]
   end
 
@@ -46,7 +54,8 @@ defmodule Vnu.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
-      {:bypass, "~> 1.0", only: [:test]}
+      {:bypass, "~> 1.0", only: [:test]},
+      {:excoveralls, "~> 0.12", only: [:test]}
     ]
   end
 
