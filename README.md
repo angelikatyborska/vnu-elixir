@@ -1,4 +1,4 @@
-# Vnu [![angelikatyborska](https://circleci.com/gh/angelikatyborska/vnu-elixir.svg?style=shield)](https://circleci.com/gh/angelikatyborska/vnu-elixir)
+# Vnu [![angelikatyborska](https://circleci.com/gh/angelikatyborska/vnu-elixir.svg?style=shield)](https://circleci.com/gh/angelikatyborska/vnu-elixir) [![Coverage Status](https://coveralls.io/repos/github/angelikatyborska/vnu-elixir/badge.svg?branch=master)](https://coveralls.io/github/angelikatyborska/vnu-elixir?branch=master)
 
 An Elixir client for [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/).
 

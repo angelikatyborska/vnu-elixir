@@ -23,7 +23,15 @@ executors:
       VNU_SERVER_URL: http://localhost:8888/
 
 commands:
-  do_everything:
+  test:
+    steps:
+      - run: mix local.hex --force && mix local.rebar --force
+      - run: mix deps.get
+      - run: mix compile --warnings-as-errors --force
+      - run: mix format --check-formatted
+      - run: mix test
+
+  test_with_older_deps:
     steps:
       - run: mix local.hex --force && mix local.rebar --force
       - run: mix deps.get
@@ -47,21 +55,24 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - do_everything
+      - test
+      - run: mix coveralls.circle
+      - test_with_older_deps
 
   test-elixir-9:
     executor: elixir-9
     working_directory: ~/repo
     steps:
       - checkout
-      - do_everything
+      - test
+      - test_with_older_deps
 
   test-elixir-8:
     executor: elixir-8
     working_directory: ~/repo
     steps:
-      - checkout
-      - do_everything
+      - test
+      - test_with_older_deps
 
 workflows:
   version: 2
