@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## 1.0.0 (2020-04-13)
 
 ### Changed
 - When used incorrectly, instead of custom usage info, mix tasks will print the same message as running `mix help ...` would print
