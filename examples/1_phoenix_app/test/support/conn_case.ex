@@ -21,20 +21,23 @@ defmodule PhoenixAppWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import Vnu.Assertions, only: [assert_valid_html: 2]
       alias PhoenixAppWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
       @endpoint PhoenixAppWeb.Endpoint
+
+      def assert_valid_html(html, vnu_opts \\ []) do
+        default_vnu_opts = [
+          server_url: Application.get_env(:phoenix_app, :vnu_server_url),
+          fail_on_warnings: true
+        ]
+
+        Vnu.Assertions.assert_valid_html(html, Keyword.merge(default_vnu_opts, vnu_opts))
+      end
+
+      setup _tags do
+        {:ok, conn: Phoenix.ConnTest.build_conn()}
+      end
     end
-  end
-
-  setup _tags do
-    vnu_opts = [
-      server_url: Application.get_env(:phoenix_app, :vnu_server_url),
-      fail_on_warnings: true
-    ]
-
-    {:ok, conn: Phoenix.ConnTest.build_conn(), vnu_opts: vnu_opts}
   end
 end
