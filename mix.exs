@@ -54,7 +54,7 @@ defmodule Vnu.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
-      {:bypass, "~> 1.0", only: [:test]},
+      {:bypass, "~> 2.1", only: [:test]},
       {:excoveralls, "~> 0.12", only: [:test]}
     ]
   end
