@@ -64,7 +64,6 @@ jobs:
       - checkout
       - test
       - run: mix coveralls.circle
-      - test_with_older_deps
 
   test-elixir-10:
     executor: elixir-10
