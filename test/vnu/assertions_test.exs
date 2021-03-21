@@ -46,7 +46,7 @@ defmodule Vnu.AssertionsTest do
                    }\n"
 
         e ->
-          reraise e, System.stacktrace()
+          reraise e, __STACKTRACE__
       end
     end
 
@@ -74,7 +74,7 @@ defmodule Vnu.AssertionsTest do
                    }\n"
 
         e ->
-          reraise e, System.stacktrace()
+          reraise e, __STACKTRACE__
       end
     end
 
@@ -103,7 +103,7 @@ defmodule Vnu.AssertionsTest do
           assert_valid_html(html, Keyword.merge(opts, filter: Filter))
 
         e ->
-          reraise e, System.stacktrace()
+          reraise e, __STACKTRACE__
       end
     end
 
@@ -140,7 +140,7 @@ defmodule Vnu.AssertionsTest do
                    }\n\n...and 2 more.\n"
 
         e ->
-          reraise e, System.stacktrace()
+          reraise e, __STACKTRACE__
       end
     end
   end
@@ -179,7 +179,7 @@ defmodule Vnu.AssertionsTest do
                    }\n"
 
         e ->
-          reraise e, System.stacktrace()
+          reraise e, __STACKTRACE__
       end
     end
   end
@@ -223,7 +223,7 @@ defmodule Vnu.AssertionsTest do
                    }\n"
 
         e ->
-          reraise e, System.stacktrace()
+          reraise e, __STACKTRACE__
       end
     end
   end
