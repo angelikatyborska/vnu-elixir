@@ -5,7 +5,13 @@ defmodule Vnu.HTTP do
 
   @doc false
   def get_result(html, config) do
-    url = "#{config.server_url}?out=json"
+    uri = URI.parse(config.server_url)
+    query = Map.merge(uri.query || %{}, %{out: "json"})
+
+    url =
+      uri
+      |> URI.merge(%URI{query: URI.encode_query(query)})
+      |> URI.to_string()
 
     content_type =
       case config.format do
