@@ -12,7 +12,7 @@ defmodule Vnu.MixProject do
       deps: deps(),
       aliases: aliases(),
       docs: [extras: ["README.md", "CHANGELOG.md"]],
-      dialyzer: [plt_add_apps: [:mix, :ex_unit]],
+      dialyzer: [plt_add_apps: [:mix, :ex_unit, :hackney]],
       description: description(),
       package: package(),
       name: "Vnu",
@@ -49,8 +49,8 @@ defmodule Vnu.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 1.0"},
       {:jason, "~> 1.0"},
+      {:hackney, "~> 1.17", optional: true},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},

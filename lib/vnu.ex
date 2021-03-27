@@ -58,7 +58,7 @@ defmodule Vnu do
       iex> Vnu.validate_html("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+        message: "Could not contact the server, got error: :nxdomain"
       }}
   """
 
@@ -101,7 +101,7 @@ defmodule Vnu do
       iex> Vnu.validate_css("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+        message: "Could not contact the server, got error: :nxdomain"
       }}
   """
 
@@ -156,7 +156,7 @@ defmodule Vnu do
       iex> Vnu.validate_svg("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+        message: "Could not contact the server, got error: :nxdomain"
       }}
   """
 

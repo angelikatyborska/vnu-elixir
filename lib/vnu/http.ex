@@ -22,15 +22,15 @@ defmodule Vnu.HTTP do
 
     headers = [{"Content-Type", "#{content_type}; charset=utf-8"}]
 
-    case HTTPoison.post(url, html, headers, follow_redirect: true) do
-      {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
+    case config.http_client.post(url, html, headers) do
+      {:ok, %{body: body, status: 200}} ->
         parse_body(body)
 
-      {:ok, %HTTPoison.Response{body: body, status_code: status_code}} ->
+      {:ok, %{body: body, status: status}} ->
         {:error,
          Error.new(
            :unexpected_server_response,
-           "Expected the server to respond with status code 200, instead got #{status_code} with body: #{
+           "Expected the server to respond with status code 200, instead got #{status} with body: #{
              inspect(body)
            }"
          )}

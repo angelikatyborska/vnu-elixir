@@ -3,15 +3,21 @@ defmodule Vnu.Config do
 
   alias Vnu.Error
 
-  defstruct [:server_url, :format, :filter]
+  defstruct [:http_client, :server_url, :format, :filter]
 
-  @defaults [server_url: "http://localhost:8888", format: :html, filter: nil]
+  @defaults [
+    http_client: Vnu.HTTPClient.Hackney,
+    server_url: "http://localhost:8888",
+    format: :html,
+    filter: nil
+  ]
 
   @doc false
   def new(opts) when is_list(opts) do
     opts = Keyword.merge(@defaults, opts)
 
     %__MODULE__{}
+    |> set_http_client(opts)
     |> set_server_url(opts)
     |> set_format(opts)
     |> set_filter(opts)
@@ -25,7 +31,34 @@ defmodule Vnu.Config do
     end
   end
 
-  defp set_server_url(config, opts) do
+  defp set_http_client(config, opts) do
+    http_client = Keyword.get(opts, :http_client)
+
+    cond do
+      !is_atom(http_client) ->
+        {:error,
+         Error.new(
+           :invalid_config,
+           "Expected http_client to be a module, got: #{inspect(http_client)}"
+         )}
+
+      !Code.ensure_loaded?(http_client) || !Kernel.function_exported?(http_client, :post, 3) ->
+        {:error,
+         Error.new(
+           :invalid_config,
+           "Expected http_client to be a module that implements the Vnu.HTTPClient behaviour, got: #{
+             inspect(http_client)
+           }"
+         )}
+
+      true ->
+        {:ok, %{config | http_client: http_client}}
+    end
+  end
+
+  defp set_server_url({:error, error}, _opts), do: {:error, error}
+
+  defp set_server_url({:ok, config}, opts) do
     server_url = Keyword.get(opts, :server_url)
 
     if is_bitstring(server_url) do
