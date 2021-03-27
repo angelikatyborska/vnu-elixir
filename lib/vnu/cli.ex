@@ -8,7 +8,12 @@ defmodule Vnu.CLI do
   def validate(argv, format) do
     {opts, files, invalid_args} =
       OptionParser.parse(argv,
-        strict: [server_url: :string, fail_on_warnings: :boolean, filter: :string]
+        strict: [
+          http_client: :string,
+          server_url: :string,
+          fail_on_warnings: :boolean,
+          filter: :string
+        ]
       )
 
     if invalid_args != [] do
@@ -21,9 +26,21 @@ defmodule Vnu.CLI do
       Mix.raise("No files given")
     end
 
-    opts = Keyword.update(opts, :filter, nil, &Module.concat([&1]))
+    opts =
+      if Keyword.get(opts, :http_client) do
+        Keyword.update!(opts, :http_client, &Module.concat([&1]))
+      else
+        opts
+      end
 
-    if Keyword.get(opts, :filter, nil) do
+    opts =
+      if Keyword.get(opts, :filter) do
+        Keyword.update!(opts, :filter, &Module.concat([&1]))
+      else
+        opts
+      end
+
+    if Keyword.get(opts, :filter) || Keyword.get(opts, :http_client) do
       # must compile to ensure the filter module is available
       Mix.Task.run("compile", [])
     end

@@ -37,12 +37,13 @@ HTTP/1.1 200 OK
 
 Make sure to read about the [prerequisites](#prerequisites) first.
 
-Add Vnu as a dependency to your project's `mix.exs`:
+Add Vnu as a dependency to your project's `mix.exs`. To use the built-in, Hackney-based HTTP client adapter, add `:hackney` too:
 
 ```elixir
 defp deps do
   [
-    {:vnu, "~> 1.0", only: [:dev, :test], runtime: false}
+    {:vnu, "~> 1.0", only: [:dev, :test], runtime: false},
+    {:hackney, "~> 1.17"}
   ]
 end
 ```
