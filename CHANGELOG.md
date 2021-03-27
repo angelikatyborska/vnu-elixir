@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## 1.1.0 (2021-03-27)
 
 - Replace HTTPoison with hackney
 - Make hackney optional, allow passing a custom HTTPClient
