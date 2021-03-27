@@ -5,7 +5,37 @@ defmodule Vnu.ConfigTest do
   describe "new" do
     test "defaults" do
       {:ok, config} = Config.new([])
-      assert config == %Config{server_url: "http://localhost:8888/", format: :html}
+
+      assert config == %Config{
+               http_client: Vnu.HTTPClient.Hackney,
+               server_url: "http://localhost:8888/",
+               format: :html
+             }
+    end
+
+    test "http_client must be a module" do
+      {:error, %Error{} = error} = Config.new(http_client: "apple")
+
+      assert error.reason == :invalid_config
+      assert error.message == "Expected http_client to be a module, got: \"apple\""
+    end
+
+    test "http_client must implement exist" do
+      {:error, %Error{} = error} = Config.new(http_client: SomeModule.That.DoesntExist)
+
+      assert error.reason == :invalid_config
+
+      assert error.message ==
+               "Expected http_client to be a module that implements the Vnu.HTTPClient behaviour, got: SomeModule.That.DoesntExist"
+    end
+
+    test "http_client must implement the Vnu.HTTPClient behaviour" do
+      {:error, %Error{} = error} = Config.new(http_client: String)
+
+      assert error.reason == :invalid_config
+
+      assert error.message ==
+               "Expected http_client to be a module that implements the Vnu.HTTPClient behaviour, got: String"
     end
 
     test "adds trailing slash to server_url" do

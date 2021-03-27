@@ -15,6 +15,8 @@ defmodule Vnu do
   Defaults to `http://localhost:8888`.
   - `:filter` - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
   Defaults to `nil` (no excluded messages).
+  - `:http_client` - A module implementing the `Vnu.HTTPClient` behaviour that will be used to make the HTTP request to the server.
+  Defaults to `Vnu.HTTPClient.Hackney`.
 
 
   ## Examples
@@ -58,7 +60,7 @@ defmodule Vnu do
       iex> Vnu.validate_html("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+        message: "Could not contact the server, got error: :nxdomain"
       }}
   """
 
@@ -101,7 +103,7 @@ defmodule Vnu do
       iex> Vnu.validate_css("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+        message: "Could not contact the server, got error: :nxdomain"
       }}
   """
 
@@ -123,9 +125,6 @@ defmodule Vnu do
   Validates the given SVG document.
 
   See `validate_html/2` for the list of options and other details.
-
-  ## Options
-  - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
 
   ## Examples
 
@@ -156,7 +155,7 @@ defmodule Vnu do
       iex> Vnu.validate_svg("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: %HTTPoison.Error{id: nil, reason: :nxdomain}"
+        message: "Could not contact the server, got error: :nxdomain"
       }}
   """
 
@@ -181,6 +180,8 @@ defmodule Vnu do
   - `:server_url` - The URL of [the Checker server](https://github.com/validator/validator). Defaults to `http://localhost:8888`.
   - `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
     Their presence will mean the document is invalid. Defaults to `false`.
+  - `:http_client` - A module implementing the `Vnu.HTTPClient` behaviour that will be used to make the HTTP request to the server.
+  Defaults to `Vnu.HTTPClient.Hackney`.
 
   ## Examples
 

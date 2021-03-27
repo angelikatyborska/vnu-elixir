@@ -121,5 +121,32 @@ defmodule Vnu.HTTPTest do
           Config.new!(server_url: "https://validator.w3.org/nu", format: :html)
         )
     end
+
+    test "works with a custom HTTPClient" do
+      defmodule MyHTTPClient do
+        def post(_url, body, _header) do
+          if is_bitstring(body) do
+            {:ok,
+             %{
+               status: 200,
+               body: Jason.encode!(%{messages: [%{type: "error", message: body}]})
+             }}
+          else
+            {:error, "oops"}
+          end
+        end
+      end
+
+      config = Config.new!(http_client: MyHTTPClient, format: :html)
+
+      {:ok, %Result{} = result} = HTTP.get_result("echo... echo... echo...", config)
+
+      assert result.messages == [%Vnu.Message{message: "echo... echo... echo...", type: :error}]
+
+      {:error, %Error{} = error} = HTTP.get_result(123, config)
+
+      assert error.message == "Could not contact the server, got error: \"oops\""
+      assert error.reason == :unexpected_server_response
+    end
   end
 end

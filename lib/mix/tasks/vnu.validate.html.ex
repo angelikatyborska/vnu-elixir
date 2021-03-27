@@ -19,6 +19,8 @@ defmodule Mix.Tasks.Vnu.Validate.Html do
     Their presence will mean the document is invalid. Defaults to `false`.
   - `--filter` - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
     Defaults to `nil` (no excluded messages).
+  - `--http-client` - A module implementing the `Vnu.HTTPClient` behaviour that will be used to make the HTTP request to the server.
+  Defaults to `Vnu.HTTPClient.Hackney`.
 
   ## Exit code
 
