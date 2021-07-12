@@ -24,7 +24,7 @@ Follow their instructions on how to download it and [run it as a web server](htt
 
 The easiest option is to use the Docker image, like this:
 ```bash
-docker run -it --rm -p 8888:8888 validator/validator:latest
+docker run -it --rm -p 8888:8888 ghcr.io/validator/validator:latest
 ```
 
 Check if the server is running:

@@ -4,28 +4,28 @@ executors:
   elixir-11:
     docker:
       - image: circleci/elixir:1.11
-      - image: validator/validator:latest
+      - image: ghcr.io/validator/validator:latest
     environment:
       VNU_SERVER_URL: http://localhost:8888/
 
   elixir-10:
     docker:
       - image: circleci/elixir:1.10
-      - image: validator/validator:latest
+      - image: ghcr.io/validator/validator:latest
     environment:
       VNU_SERVER_URL: http://localhost:8888/
 
   elixir-9:
     docker:
       - image: circleci/elixir:1.9
-      - image: validator/validator:latest
+      - image: ghcr.io/validator/validator:latest
     environment:
       VNU_SERVER_URL: http://localhost:8888/
 
   elixir-8:
     docker:
       - image: circleci/elixir:1.8
-      - image: validator/validator:latest
+      - image: ghcr.io/validator/validator:latest
     environment:
       VNU_SERVER_URL: http://localhost:8888/
 
