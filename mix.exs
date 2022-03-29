@@ -55,7 +55,7 @@ defmodule Vnu.MixProject do
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
       {:bypass, "~> 2.1", only: [:test]},
-      {:excoveralls, "~> 0.12", only: [:test]}
+      {:excoveralls, "~> 0.14", only: [:test]}
     ]
   end
 

@@ -41,9 +41,7 @@ defmodule Vnu.AssertionsTest do
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
-                   "Expected the HTML document to be valid, but got 1 warning\n\n#{
-                     Formatter.format_messages(messages)
-                   }\n"
+                   "Expected the HTML document to be valid, but got 1 warning\n\n#{Formatter.format_messages(messages)}\n"
 
         e ->
           reraise e, __STACKTRACE__
@@ -69,9 +67,7 @@ defmodule Vnu.AssertionsTest do
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
-                   "Expected the HTML document to be valid, but got 1 error\n\n#{
-                     Formatter.format_messages(errors)
-                   }\n"
+                   "Expected the HTML document to be valid, but got 1 error\n\n#{Formatter.format_messages(errors)}\n"
 
         e ->
           reraise e, __STACKTRACE__
@@ -135,9 +131,7 @@ defmodule Vnu.AssertionsTest do
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
-                   "Expected the HTML document to be valid, but got 3 errors and 2 warnings\n\n#{
-                     Enum.take(Formatter.format_messages(messages), 3) |> Enum.join("\n\n")
-                   }\n\n...and 2 more.\n"
+                   "Expected the HTML document to be valid, but got 3 errors and 2 warnings\n\n#{Enum.take(Formatter.format_messages(messages), 3) |> Enum.join("\n\n")}\n\n...and 2 more.\n"
 
         e ->
           reraise e, __STACKTRACE__
@@ -174,9 +168,7 @@ defmodule Vnu.AssertionsTest do
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
-                   "Expected the CSS document to be valid, but got 2 errors\n\n#{
-                     Formatter.format_messages(messages) |> Enum.join("\n\n")
-                   }\n"
+                   "Expected the CSS document to be valid, but got 2 errors\n\n#{Formatter.format_messages(messages) |> Enum.join("\n\n")}\n"
 
         e ->
           reraise e, __STACKTRACE__
@@ -218,9 +210,7 @@ defmodule Vnu.AssertionsTest do
       rescue
         error in [ExUnit.AssertionError] ->
           assert error.message ==
-                   "Expected the SVG document to be valid, but got 4 errors\n\n#{
-                     Formatter.format_messages(messages) |> Enum.join("\n\n")
-                   }\n"
+                   "Expected the SVG document to be valid, but got 4 errors\n\n#{Formatter.format_messages(messages) |> Enum.join("\n\n")}\n"
 
         e ->
           reraise e, __STACKTRACE__

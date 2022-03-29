@@ -48,9 +48,7 @@ defmodule Vnu.Validator do
          %Error{
            reason: :unexpected_server_response,
            message:
-             "The server could not finish validating the document, non-document errors occurred: #{
-               inspect(list)
-             }"
+             "The server could not finish validating the document, non-document errors occurred: #{inspect(list)}"
          }}
 
       _ ->

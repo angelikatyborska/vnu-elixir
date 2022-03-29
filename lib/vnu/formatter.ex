@@ -222,9 +222,7 @@ defmodule Vnu.Formatter do
       case extract do
         [extract, hilite] ->
           "#{left_padding}#{if location, do: with_color(location, label_color())}#{extract}\n" <>
-            "#{left_padding}#{if location, do: String.duplicate(" ", String.length(location))}#{
-              hilite
-            }"
+            "#{left_padding}#{if location, do: String.duplicate(" ", String.length(location))}#{hilite}"
 
         [extract] ->
           "#{left_padding}#{if location, do: with_color(location, label_color())}#{extract}"
