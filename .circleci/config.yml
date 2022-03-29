@@ -1,6 +1,20 @@
 version: 2.1
 
 executors:
+  elixir-13:
+    docker:
+      - image: circleci/elixir:1.13
+      - image: ghcr.io/validator/validator:latest
+    environment:
+      VNU_SERVER_URL: http://localhost:8888/
+
+  elixir-12:
+    docker:
+      - image: circleci/elixir:1.12
+      - image: ghcr.io/validator/validator:latest
+    environment:
+      VNU_SERVER_URL: http://localhost:8888/
+
   elixir-11:
     docker:
       - image: circleci/elixir:1.11
@@ -57,6 +71,22 @@ commands:
             - WITH_OLDER_DEPS: true
 
 jobs:
+  test-elixir-13:
+    executor: elixir-13
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - test
+      - run: mix coveralls.circle
+
+  test-elixir-12:
+    executor: elixir-12
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - test
+      - run: mix coveralls.circle
+
   test-elixir-11:
     executor: elixir-11
     working_directory: ~/repo
@@ -94,13 +124,19 @@ workflows:
   version: 2
   test:
     jobs:
-      - test-elixir-11
+      - test-elixir-13
+      - test-elixir-12:
+          requires:
+            - test-elixir-13
+      - test-elixir-11:
+          requires:
+            - test-elixir-13
       - test-elixir-10:
           requires:
-            - test-elixir-11
+            - test-elixir-13
       - test-elixir-9:
           requires:
-            - test-elixir-11
+            - test-elixir-13
       - test-elixir-8:
           requires:
-            - test-elixir-11
+            - test-elixir-13
