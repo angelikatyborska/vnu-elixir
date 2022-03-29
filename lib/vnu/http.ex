@@ -30,9 +30,7 @@ defmodule Vnu.HTTP do
         {:error,
          Error.new(
            :unexpected_server_response,
-           "Expected the server to respond with status code 200, instead got #{status} with body: #{
-             inspect(body)
-           }"
+           "Expected the server to respond with status code 200, instead got #{status} with body: #{inspect(body)}"
          )}
 
       {:error, error} ->

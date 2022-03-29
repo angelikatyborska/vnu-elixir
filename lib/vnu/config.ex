@@ -46,9 +46,7 @@ defmodule Vnu.Config do
         {:error,
          Error.new(
            :invalid_config,
-           "Expected http_client to be a module that implements the Vnu.HTTPClient behaviour, got: #{
-             inspect(http_client)
-           }"
+           "Expected http_client to be a module that implements the Vnu.HTTPClient behaviour, got: #{inspect(http_client)}"
          )}
 
       true ->
@@ -85,9 +83,7 @@ defmodule Vnu.Config do
       {:error,
        Error.new(
          :invalid_config,
-         "Expected format to be one of #{Enum.map(@formats, &Kernel.inspect/1) |> Enum.join(", ")}, got: #{
-           inspect(format)
-         }"
+         "Expected format to be one of #{Enum.map(@formats, &Kernel.inspect/1) |> Enum.join(", ")}, got: #{inspect(format)}"
        )}
     end
   end
@@ -103,9 +99,7 @@ defmodule Vnu.Config do
       {:error,
        Error.new(
          :invalid_config,
-         "Expected filter to be a module that implements the Vnu.MessageFilter behavior, got: #{
-           inspect(filter)
-         }"
+         "Expected filter to be a module that implements the Vnu.MessageFilter behavior, got: #{inspect(filter)}"
        )}
     end
   end

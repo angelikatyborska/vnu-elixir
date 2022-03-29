@@ -274,19 +274,13 @@ defmodule Vnu.FormatterTest do
   describe "format_counts" do
     test "gives a full phrase" do
       assert Formatter.format_counts(%{error_count: 5, warning_count: 0, info_count: 1}) ==
-               "#{red()}5 errors#{reset()}, #{yellow()}0 warnings#{reset()}, and #{blue()}1 info#{
-                 reset()
-               }"
+               "#{red()}5 errors#{reset()}, #{yellow()}0 warnings#{reset()}, and #{blue()}1 info#{reset()}"
 
       assert Formatter.format_counts(%{error_count: 1, warning_count: 1, info_count: 0}) ==
-               "#{red()}1 error#{reset()}, #{yellow()}1 warning#{reset()}, and #{blue()}0 infos#{
-                 reset()
-               }"
+               "#{red()}1 error#{reset()}, #{yellow()}1 warning#{reset()}, and #{blue()}0 infos#{reset()}"
 
       assert Formatter.format_counts(%{error_count: 0, warning_count: 3, info_count: 7}) ==
-               "#{red()}0 errors#{reset()}, #{yellow()}3 warnings#{reset()}, and #{blue()}7 infos#{
-                 reset()
-               }"
+               "#{red()}0 errors#{reset()}, #{yellow()}3 warnings#{reset()}, and #{blue()}7 infos#{reset()}"
     end
 
     test "can skip colors" do
@@ -314,9 +308,7 @@ defmodule Vnu.FormatterTest do
       assert Formatter.format_counts(%{error_count: 5, warning_count: 3, info_count: 7},
                exclude_zeros: true
              ) ==
-               "#{red()}5 errors#{reset()}, #{yellow()}3 warnings#{reset()}, and #{blue()}7 infos#{
-                 reset()
-               }"
+               "#{red()}5 errors#{reset()}, #{yellow()}3 warnings#{reset()}, and #{blue()}7 infos#{reset()}"
 
       assert Formatter.format_counts(%{error_count: 5, warning_count: 0, info_count: 7},
                exclude_zeros: true

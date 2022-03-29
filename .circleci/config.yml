@@ -44,21 +44,22 @@ executors:
       VNU_SERVER_URL: http://localhost:8888/
 
 commands:
-  test:
+  check_formatted:
     steps:
       - run: mix local.hex --force && mix local.rebar --force
       - run: mix deps.get
       - run: mix compile --warnings-as-errors --force
       - run: mix format --check-formatted
+
+  test:
+    steps:
+      - run: mix local.hex --force && mix local.rebar --force
+      - run: mix deps.get
       - run: mix test
 
   test_with_older_deps:
     steps:
       - run: mix local.hex --force && mix local.rebar --force
-      - run: mix deps.get
-      - run: mix compile --warnings-as-errors --force
-      - run: mix format --check-formatted
-      - run: mix test
       - run:
           name: mix deps.get (with older deps)
           command: mix deps.get
@@ -76,6 +77,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - check_formatted
       - test
       - run: mix coveralls.circle
 
