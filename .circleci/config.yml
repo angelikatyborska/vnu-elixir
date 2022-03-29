@@ -29,20 +29,6 @@ executors:
     environment:
       VNU_SERVER_URL: http://localhost:8888/
 
-  elixir-9:
-    docker:
-      - image: cimg/elixir:1.9
-      - image: ghcr.io/validator/validator:latest
-    environment:
-      VNU_SERVER_URL: http://localhost:8888/
-
-  elixir-8:
-    docker:
-      - image: cimg/elixir:1.8
-      - image: ghcr.io/validator/validator:latest
-    environment:
-      VNU_SERVER_URL: http://localhost:8888/
-
 commands:
   check_formatted:
     steps:
@@ -103,20 +89,6 @@ jobs:
       - test
       - test_with_older_deps
 
-  test-elixir-9:
-    executor: elixir-9
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - test_with_older_deps
-
-  test-elixir-8:
-    executor: elixir-8
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - test_with_older_deps
-
 workflows:
   version: 2
   test:
@@ -129,11 +101,5 @@ workflows:
           requires:
             - test-elixir-13
       - test-elixir-10:
-          requires:
-            - test-elixir-13
-      - test-elixir-9:
-          requires:
-            - test-elixir-13
-      - test-elixir-8:
           requires:
             - test-elixir-13
