@@ -112,12 +112,6 @@ defmodule Vnu.HTTPTest do
       {:ok, %Result{}} =
         HTTP.get_result(
           "",
-          Config.new!(server_url: "http://validator.w3.org/nu", format: :html)
-        )
-
-      {:ok, %Result{}} =
-        HTTP.get_result(
-          "",
           Config.new!(server_url: "https://validator.w3.org/nu", format: :html)
         )
     end
