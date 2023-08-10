@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Vnu.Validate.HtmlTest do
              Mix.Tasks.Vnu.Validate.Html.run([
                "--server-url",
                Keyword.get(opts, :server_url),
-               "test/fixtures/valid.html.heex"
+               "test/fixtures/valid.html"
              ])
            ) ==
              {:shutdown, 0}
@@ -43,7 +43,7 @@ defmodule Mix.Tasks.Vnu.Validate.HtmlTest do
              Mix.Tasks.Vnu.Validate.Html.run([
                "--server-url",
                Keyword.get(opts, :server_url),
-               "test/fixtures/valid.html.heex",
+               "test/fixtures/valid.html",
                "test/fixtures/invalid.html"
              ])
            ) == {:shutdown, 1}
