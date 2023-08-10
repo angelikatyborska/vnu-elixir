@@ -31,7 +31,7 @@ defmodule Mix.Tasks.Vnu.Validate.Html do
 
   ```bash
   mix vnu.validate.html index.html about.html
-  mix vnu.validate.html --server-url localhost:8888 priv/static/**/*.html
+  mix vnu.validate.html --server-url http://localhost:8888 priv/static/**/*.html
   mix vnu.validate.html --filter MyApp.VnuMessageFilter priv/static/**/*.html
   ```
   """

@@ -17,7 +17,7 @@ defmodule Mix.Tasks.Vnu.Validate.Css do
   Examples
   ```bash
   mix vnu.validate.css screen.css print.css
-  mix vnu.validate.css --server-url localhost:8888 priv/static/**/*.css
+  mix vnu.validate.css --server-url http://localhost:8888 priv/static/**/*.css
   ```
   """
 

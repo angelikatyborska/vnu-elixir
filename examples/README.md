@@ -18,4 +18,4 @@ You can change the Checker server URL in `1_phoenix_app/config/test.exs`:
 
 Run `mix vnu.validate.css --server-url http://localhost:8888 assets/**/*.css` to test the mix task.
 
-![](1_phoenix_app_failing_mix_task_2.png)
+![](1_phoenix_app_failing_mix_task.png)
