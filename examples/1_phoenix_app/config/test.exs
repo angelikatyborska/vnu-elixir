@@ -12,3 +12,5 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :phoenix_app, :vnu_server_url, "http://localhost:8888"

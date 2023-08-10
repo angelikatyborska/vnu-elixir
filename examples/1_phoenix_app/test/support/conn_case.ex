@@ -28,6 +28,15 @@ defmodule PhoenixAppWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import PhoenixAppWeb.ConnCase
+
+      def assert_valid_html(html, vnu_opts \\ []) do
+        default_vnu_opts = [
+          server_url: Application.get_env(:phoenix_app, :vnu_server_url),
+          fail_on_warnings: true
+        ]
+
+        Vnu.Assertions.assert_valid_html(html, Keyword.merge(default_vnu_opts, vnu_opts))
+      end
     end
   end
 

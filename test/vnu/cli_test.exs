@@ -7,13 +7,13 @@ defmodule Vnu.CLITest do
     test "no errors", %{opts: opts} do
       assert catch_exit(
                CLI.validate(
-                 ["--server-url", Keyword.get(opts, :server_url), "test/fixtures/valid.html"],
+                 ["--server-url", Keyword.get(opts, :server_url), "test/fixtures/valid.html.heex"],
                  :html
                )
              ) == {:shutdown, 0}
 
       assert_received {:mix_shell, :info, ["\nValidating HTML files:"]}
-      assert_received {:mix_shell, :info, ["  - test/fixtures/valid.html\n"]}
+      assert_received {:mix_shell, :info, ["  - test/fixtures/valid.html.heex\n"]}
       summary = [with_color("✓ All OK!", success_color())]
       assert_received {:mix_shell, :info, ^summary}
     end
@@ -72,7 +72,7 @@ defmodule Vnu.CLITest do
     end
 
     test "many files, many errors", %{opts: opts} do
-      path1 = "test/fixtures/valid.html"
+      path1 = "test/fixtures/valid.html.heex"
       path2 = "test/fixtures/warning.html"
       path3 = "test/fixtures/invalid.html"
       {:ok, %Result{messages: messages2}} = Vnu.validate_html(File.read!(path2), opts)
@@ -91,7 +91,7 @@ defmodule Vnu.CLITest do
 
       assert_received {:mix_shell, :info,
                        [
-                         "  - test/fixtures/valid.html\n  - test/fixtures/warning.html\n  - test/fixtures/invalid.html\n"
+                         "  - test/fixtures/valid.html.heex\n  - test/fixtures/warning.html\n  - test/fixtures/invalid.html\n"
                        ]}
 
       assert_received {:mix_shell, :info, [^messages2]}
