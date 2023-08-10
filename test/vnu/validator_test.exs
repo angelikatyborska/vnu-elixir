@@ -102,8 +102,22 @@ defmodule Vnu.ValidatorTest do
 
       assert error.reason == :unexpected_server_response
 
+      expected_error_struct = %Vnu.Message{
+        extract: nil,
+        first_column: nil,
+        first_line: nil,
+        hilite_length: nil,
+        hilite_start: nil,
+        last_column: nil,
+        last_line: nil,
+        message: "message 1",
+        offset: nil,
+        sub_type: nil,
+        type: :non_document_error
+      }
+
       assert error.message ==
-               "The server could not finish validating the document, non-document errors occurred: [%Vnu.Message{extract: nil, first_column: nil, first_line: nil, hilite_length: nil, hilite_start: nil, last_column: nil, last_line: nil, message: \"message 1\", offset: nil, sub_type: nil, type: :non_document_error}]"
+               "The server could not finish validating the document, non-document errors occurred: [#{inspect(expected_error_struct)}]"
     end
 
     test "filters out the messages", %{bypass: bypass} do
@@ -168,8 +182,22 @@ defmodule Vnu.ValidatorTest do
         Plug.Conn.resp(conn, 200, Jason.encode!(body))
       end)
 
+      expected_error_struct = %Vnu.Message{
+        extract: nil,
+        first_column: nil,
+        first_line: nil,
+        hilite_length: nil,
+        hilite_start: nil,
+        last_column: nil,
+        last_line: nil,
+        message: "message 1",
+        offset: nil,
+        sub_type: nil,
+        type: :non_document_error
+      }
+
       assert_raise Error,
-                   "The server could not finish validating the document, non-document errors occurred: [%Vnu.Message{extract: nil, first_column: nil, first_line: nil, hilite_length: nil, hilite_start: nil, last_column: nil, last_line: nil, message: \"message 1\", offset: nil, sub_type: nil, type: :non_document_error}]",
+                   "The server could not finish validating the document, non-document errors occurred: [#{inspect(expected_error_struct)}]",
                    fn ->
                      Validator.validate!("", server_url: "http://localhost:#{bypass.port}")
                    end

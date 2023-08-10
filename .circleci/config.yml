@@ -1,6 +1,20 @@
 version: 2.1
 
 executors:
+  elixir-15:
+    docker:
+      - image: cimg/elixir:1.15
+      - image: ghcr.io/validator/validator:latest
+    environment:
+      VNU_SERVER_URL: http://localhost:8888/
+
+  elixir-14:
+    docker:
+      - image: cimg/elixir:1.14
+      - image: ghcr.io/validator/validator:latest
+    environment:
+      VNU_SERVER_URL: http://localhost:8888/
+
   elixir-13:
     docker:
       - image: cimg/elixir:1.13
@@ -43,29 +57,29 @@ commands:
       - run: mix deps.get
       - run: mix test
 
-  test_with_older_deps:
-    steps:
-      - run: mix local.hex --force && mix local.rebar --force
-      - run:
-          name: mix deps.get (with older deps)
-          command: mix deps.get
-          environment:
-            - WITH_OLDER_DEPS: true
-      - run:
-          name: mix test (with older deps)
-          command: mix test
-          environment:
-            - WITH_OLDER_DEPS: true
-
 jobs:
-  test-elixir-13:
-    executor: elixir-13
+  test-elixir-15:
+    executor: elixir-15
     working_directory: ~/repo
     steps:
       - checkout
       - check_formatted
       - test
       - run: mix coveralls.circle
+
+  test-elixir-14:
+    executor: elixir-14
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - test
+
+  test-elixir-13:
+    executor: elixir-13
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - test
 
   test-elixir-12:
     executor: elixir-12
@@ -87,19 +101,24 @@ jobs:
     steps:
       - checkout
       - test
-      - test_with_older_deps
 
 workflows:
   version: 2
   test:
     jobs:
-      - test-elixir-13
+      - test-elixir-15
+      - test-elixir-14:
+          requires:
+            - test-elixir-15
+      - test-elixir-13:
+          requires:
+            - test-elixir-15
       - test-elixir-12:
           requires:
-            - test-elixir-13
+            - test-elixir-15
       - test-elixir-11:
           requires:
-            - test-elixir-13
+            - test-elixir-15
       - test-elixir-10:
           requires:
-            - test-elixir-13
+            - test-elixir-15

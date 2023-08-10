@@ -27,6 +27,8 @@ The easiest option is to use the Docker image, like this:
 docker run -it --rm -p 8888:8888 ghcr.io/validator/validator:latest
 ```
 
+The command might require an additional ` --platform linux/amd64` flag on M1 macs.
+
 Check if the server is running:
 ```bash
 $ curl localhost:8888 -I
