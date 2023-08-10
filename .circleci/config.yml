@@ -57,20 +57,6 @@ commands:
       - run: mix deps.get
       - run: mix test
 
-  test_with_older_deps:
-    steps:
-      - run: mix local.hex --force && mix local.rebar --force
-      - run:
-          name: mix deps.get (with older deps)
-          command: mix deps.get
-          environment:
-            - WITH_OLDER_DEPS: true
-      - run:
-          name: mix test (with older deps)
-          command: mix test
-          environment:
-            - WITH_OLDER_DEPS: true
-
 jobs:
   test-elixir-15:
     executor: elixir-15
@@ -115,7 +101,6 @@ jobs:
     steps:
       - checkout
       - test
-      - test_with_older_deps
 
 workflows:
   version: 2

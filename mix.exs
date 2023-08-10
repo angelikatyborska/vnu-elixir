@@ -6,7 +6,7 @@ defmodule Vnu.MixProject do
       app: :vnu,
       version: "1.1.0",
       elixir: "~> 1.8",
-      lockfile: lockfile(),
+      lockfile: "mix.lock",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
@@ -33,14 +33,6 @@ defmodule Vnu.MixProject do
     [
       extra_applications: [:logger]
     ]
-  end
-
-  defp lockfile() do
-    if !!System.get_env("WITH_OLDER_DEPS") do
-      "mix-older-deps.lock"
-    else
-      "mix.lock"
-    end
   end
 
   defp elixirc_paths(:test), do: ["test/support" | elixirc_paths(:any)]
