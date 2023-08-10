@@ -18,7 +18,7 @@ defmodule Mix.Tasks.Vnu.Validate.Svg do
 
   ```bash
   mix vnu.validate.svg home_icon.svg logo.svg
-  mix vnu.validate.svg --server-url localhost:8888 priv/static/**/*.svg
+  mix vnu.validate.svg --server-url http://localhost:8888 priv/static/**/*.svg
   ```
   """
 

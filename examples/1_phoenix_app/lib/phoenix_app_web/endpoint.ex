@@ -7,12 +7,11 @@ defmodule PhoenixAppWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_phoenix_app_key",
-    signing_salt: "/+CIHAis"
+    signing_salt: "9sm6O2mp",
+    same_site: "Lax"
   ]
 
-  socket "/socket", PhoenixAppWeb.UserSocket,
-    websocket: true,
-    longpoll: false
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -22,7 +21,7 @@ defmodule PhoenixAppWeb.Endpoint do
     at: "/",
     from: :phoenix_app,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: PhoenixAppWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

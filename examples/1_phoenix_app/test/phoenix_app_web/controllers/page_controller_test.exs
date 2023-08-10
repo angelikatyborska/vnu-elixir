@@ -12,7 +12,7 @@ defmodule PhoenixAppWeb.PageControllerTest do
         filter: PhoenixAppWeb.VnuHTMLMessageFilter
       )
 
-    assert html_response =~ "Welcome to Phoenix!"
+    assert html_response =~ "Peace of mind from prototype to production"
   end
 
   test "GET /valid", %{conn: conn} do

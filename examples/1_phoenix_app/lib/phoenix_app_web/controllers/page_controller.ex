@@ -1,19 +1,20 @@
 defmodule PhoenixAppWeb.PageController do
   use PhoenixAppWeb, :controller
 
-  def index(conn, _params) do
-    render(conn, "index.html")
+  def home(conn, _params) do
+    conn
+    |> render(:home, layout: false)
   end
 
   def valid(conn, _params) do
     conn
-    |> put_layout(false)
-    |> render("valid.html")
+    |> put_root_layout(html: false)
+    |> render(:valid, layout: false)
   end
 
   def invalid(conn, _params) do
     conn
-    |> put_layout(false)
-    |> render("invalid.html")
+    |> put_root_layout(html: false)
+    |> render(:invalid, layout: false)
   end
 end

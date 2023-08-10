@@ -107,7 +107,7 @@ If you have static HTML, CSS, or SVG files in your project, you might want to va
 #### Example
 
 ```bash
-$ mix vnu.validate.css --server-url localhost:8888 assets/**/*.css
+$ mix vnu.validate.css --server-url http://localhost:8888 assets/**/*.css
 ```
 
 ![](examples/1_phoenix_app_failing_mix_task.png)

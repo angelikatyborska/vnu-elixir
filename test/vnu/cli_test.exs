@@ -7,7 +7,11 @@ defmodule Vnu.CLITest do
     test "no errors", %{opts: opts} do
       assert catch_exit(
                CLI.validate(
-                 ["--server-url", Keyword.get(opts, :server_url), "test/fixtures/valid.html"],
+                 [
+                   "--server-url",
+                   Keyword.get(opts, :server_url),
+                   "test/fixtures/valid.html"
+                 ],
                  :html
                )
              ) == {:shutdown, 0}
