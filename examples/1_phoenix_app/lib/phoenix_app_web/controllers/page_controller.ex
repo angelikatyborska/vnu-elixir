@@ -1,19 +1,9 @@
 defmodule PhoenixAppWeb.PageController do
   use PhoenixAppWeb, :controller
 
-  def index(conn, _params) do
-    render(conn, "index.html")
-  end
-
-  def valid(conn, _params) do
-    conn
-    |> put_layout(false)
-    |> render("valid.html")
-  end
-
-  def invalid(conn, _params) do
-    conn
-    |> put_layout(false)
-    |> render("invalid.html")
+  def home(conn, _params) do
+    # The home page is often custom made,
+    # so skip the default app layout.
+    render(conn, :home, layout: false)
   end
 end
