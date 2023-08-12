@@ -21,7 +21,7 @@ defmodule Vnu.HTTPClient.Hackney do
       Logger.error("""
       Could not find hackney dependency.
 
-      Please add :httpoison to your dependencies:
+      Please add :hackney to your dependencies:
 
           {:hackney, "~> 1.17"}
 
