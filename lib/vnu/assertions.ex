@@ -96,6 +96,7 @@ defmodule Vnu.Assertions do
           #{messages_string}
           """
 
+          # credo:disable-for-lines:6 Credo.Check.Refactor.Nesting
           error_message =
             if omitted_messages_number > 0 do
               error_message <> "\n...and #{omitted_messages_number} more.\n"

@@ -1,6 +1,6 @@
 defmodule Vnu.HTTPClient.Hackney do
   @moduledoc """
-  HTTPoison-based HTTP client adapter.
+  Hackney-based HTTP client adapter.
   """
 
   @behaviour Vnu.HTTPClient

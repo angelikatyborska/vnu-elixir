@@ -8,6 +8,8 @@
 
 An Elixir client for [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/).
 
+![Expected HTML document to be valid, but got 1 error. Attribute html-is-awesome not allowed on element body at this point.](https://raw.github.com/angelikatyborska/vnu-elixir/main/assets/overview.png)
+
 [v.Nu](https://validator.w3.org/nu/) is a document validity checker used by the W3C.
 It offers validating HTML, CSS, and SVG documents.
 
@@ -24,10 +26,10 @@ Follow their instructions on how to download it and [run it as a web server](htt
 
 The easiest option is to use the Docker image, like this:
 ```bash
-docker run -it --rm -p 8888:8888 ghcr.io/validator/validator:latest
+docker run -d --rm -p 8888:8888 ghcr.io/validator/validator:latest
 ```
 
-The command might require an additional ` --platform linux/amd64` flag on M1 macs.
+The command might require an additional `--platform linux/amd64` flag on M1 macs.
 
 Check if the server is running:
 ```bash
@@ -39,125 +41,32 @@ HTTP/1.1 200 OK
 
 Make sure to read about the [prerequisites](#prerequisites) first.
 
-Add Vnu as a dependency to your project's `mix.exs`. To use the built-in, Hackney-based HTTP client adapter, add `:hackney` too:
+Add Vnu as a dependency to your project's `mix.exs`. To use the built-in, Hackney-based HTTP client adapter, also add `:hackney`:
 
 ```elixir
 defp deps do
   [
     {:vnu, "~> 1.1", only: [:dev, :test], runtime: false},
-    {:hackney, "~> 1.17"}
+    {:hackney, "~> 1.18"}
   ]
 end
 ```
 
-And run:
+Then run:
 
 ```bash
 $ mix deps.get
 ```
 
+If you don't want to use Hackney, you can implement your own HTTP client module using the [`Vnu.HTTPClient` behavior](lib/vnu/http_client.ex) and pass it in the `http_client` option.
+
 ## Documentation
 
-[Available on hexdocs.pm](https://hexdocs.pm/vnu/api-reference.html).
+[Available on hexdocs.pm](https://hexdocs.pm/vnu).
 
 ## Usage
 
-### ExUnit assertions
-
-If you are building an application that generates HTML, CSS, or SVG files, you might want to use those validations in your tests.
-
-- `Vnu.Assertions.assert_valid_html/2`
-- `Vnu.Assertions.assert_valid_css/2`
-- `Vnu.Assertions.assert_valid_svg/2`
-
-#### Phoenix controller test example
-
-```elixir
-defmodule PhoenixAppWeb.PageControllerTest do
-  use PhoenixAppWeb.ConnCase
-  import Vnu.Assertions
-
-    test "GET /", %{conn: conn} do
-      vnu_opts = %{server_url: "http://localhost:8888", fail_on_warnings: true}
-      conn = get(conn, "/")
-      
-      html_response =
-        conn
-        |> get("/")
-        |> html_response(200)
-        |> assert_valid_html(vnu_opts)
-      
-      assert html_response =~ "Welcome to Phoenix!"
-    end
-end
-```
-
-See [`examples/1_phoenix_app/test/phoenix_app_web/controllers/page_controller_test.exs`](https://github.com/angelikatyborska/vnu-elixir/blob/master/examples/1_phoenix_app/test/phoenix_app_web/controllers/page_controller_test.exs) for more.
-
-![](examples/1_phoenix_app_failing_test.png)
-
-### Mix task
-
-If you have static HTML, CSS, or SVG files in your project, you might want to validate them with those mix tasks:
-
-- `mix vnu.validate.html`
-- `mix vnu.validate.css`
-- `mix vnu.validate.svg`
-
-#### Example
-
-```bash
-$ mix vnu.validate.css --server-url http://localhost:8888 assets/**/*.css
-```
-
-![](examples/1_phoenix_app_failing_mix_task.png)
-
-### General purpose
-
-If you need HTML, CSS, or SVG validation for something else, try one of those functions:
-
-- `Vnu.validate_html/2`
-- `Vnu.validate_css/2`
-- `Vnu.validate_svg/2`
-
-```elixir
-iex> {:ok, result} = Vnu.validate_html("<!DOCTYPE html><html><head></head></html>",
-  server_url: "http://localhost:8888")
-{:ok,
- %Vnu.Result{
-   messages: [
-     %Vnu.Message{
-       extract: "tml><head></head></html",
-       first_column: 28,
-       first_line: 1,
-       hilite_length: 7,
-       hilite_start: 10,
-       last_column: 34,
-       last_line: 1,
-       message: "Element “head” is missing a required instance of child element “title”.",
-       offset: nil,
-       sub_type: nil,
-       type: :error
-     },
-     %Vnu.Message{
-       extract: "TYPE html><html><head>",
-       first_column: 16,
-       first_line: 1,
-       hilite_length: 6,
-       hilite_start: 10,
-       last_column: 21,
-       last_line: 1,
-       message: "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.",
-       offset: nil,
-       sub_type: :warning,
-       type: :info
-     }
-   ]
- }}
-
-iex> Vnu.valid?(result)
-false
-```
+See [the usage guide](guides/usage.md).
 
 ## Development
 
@@ -165,7 +74,7 @@ Make sure to read about the [prerequisites](#prerequisites) first.
 
 After cloning the repository, run `mix deps.get` and you should be ready for development.
 
-To ensure code consistency, run `mix format`, `mix credo`, and `mix dialyzer`.
+To ensure code consistency, run `mix lint`.
 
 ### Running tests
 

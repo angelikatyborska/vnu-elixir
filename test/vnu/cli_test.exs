@@ -120,7 +120,7 @@ defmodule Vnu.CLITest do
           )
 
       summary = [
-        "Summary:\n" <> Enum.join(Enum.map([summary1, summary2, summary3], &("  - " <> &1)), "\n")
+        "Summary:\n" <> Enum.map_join([summary1, summary2, summary3], "\n", &("  - " <> &1))
       ]
 
       assert_received {:mix_shell, :info, ^summary}

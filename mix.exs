@@ -11,7 +11,7 @@ defmodule Vnu.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       aliases: aliases(),
-      docs: [extras: ["README.md", "CHANGELOG.md"]],
+      docs: docs(),
       dialyzer: [plt_add_apps: [:mix, :ex_unit, :hackney]],
       description: description(),
       package: package(),
@@ -42,7 +42,7 @@ defmodule Vnu.MixProject do
   defp deps do
     [
       {:jason, "~> 1.0"},
-      {:hackney, "~> 1.17", optional: true},
+      {:hackney, "~> 1.18", optional: true},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
@@ -70,6 +70,19 @@ defmodule Vnu.MixProject do
   defp aliases() do
     [
       lint: ["compile --force --warnings-as-errors", "format", "credo", "dialyzer"]
+    ]
+  end
+
+  defp docs do
+    [
+      main: "overview",
+      assets: "assets",
+      extras: [
+        "guides/overview.md",
+        "guides/installation.md",
+        "guides/usage.md",
+        "CHANGELOG.md"
+      ]
     ]
   end
 end

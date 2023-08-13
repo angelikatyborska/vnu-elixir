@@ -83,7 +83,7 @@ defmodule Vnu.Config do
       {:error,
        Error.new(
          :invalid_config,
-         "Expected format to be one of #{Enum.map(@formats, &Kernel.inspect/1) |> Enum.join(", ")}, got: #{inspect(format)}"
+         "Expected format to be one of #{Enum.map_join(@formats, ", ", &Kernel.inspect/1)}, got: #{inspect(format)}"
        )}
     end
   end

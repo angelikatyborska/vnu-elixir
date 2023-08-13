@@ -33,14 +33,11 @@ defmodule PhoenixAppWeb.ConnCase do
         default_vnu_opts = [
           server_url: Application.get_env(:phoenix_app, :vnu_server_url),
           filter: PhoenixAppWeb.VnuHTMLMessageFilter,
+          http_client: PhoenixAppWeb.VnuMintClient,
           fail_on_warnings: true
         ]
 
         Vnu.Assertions.assert_valid_html(html, Keyword.merge(default_vnu_opts, vnu_opts))
-      end
-
-      def assert_valid_html_without_doctype(html, vnu_opts \\ []) do
-        assert_valid_html("<!DOCTYPE html>\n#{html}", vnu_opts)
       end
     end
   end

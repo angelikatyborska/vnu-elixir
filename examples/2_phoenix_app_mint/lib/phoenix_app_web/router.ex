@@ -20,9 +20,6 @@ defmodule PhoenixAppWeb.Router do
     get "/", PageController, :home
     get "/valid", PageController, :valid
     get "/invalid", PageController, :invalid
-
-    live "/live/valid", PageLive.Index, :valid
-    live "/live/invalid", PageLive.Index, :invalid
   end
 
   # Other scopes may use custom stacks.
