@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Fix error in error message (sic) when hackney is missing
+- Documentation improvements; adding a LiveView example
 
 ## 1.1.0 (2021-03-27)
 
