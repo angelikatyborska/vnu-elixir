@@ -4,7 +4,7 @@ defmodule Vnu.MixProject do
   def project do
     [
       app: :vnu,
-      version: "1.1.0",
+      version: "1.1.1",
       elixir: "~> 1.8",
       lockfile: "mix.lock",
       start_permanent: Mix.env() == :prod,

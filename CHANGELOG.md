@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.1 (2023-08-13)
 
 - Fix error in error message (sic) when hackney is missing
 - Documentation improvements; adding a LiveView example
