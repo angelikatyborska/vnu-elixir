@@ -1,9 +1,9 @@
 # Usage
 
 There are 3 different ways of using this library:
-    - ExUnit assertions,
-    - mix tasks for your static assets,
-    - or generic function calls for all other needs.
+- [ExUnit assertions](#exunit-assertions),
+- [mix tasks for your static assets](#mix-tasks),
+- or [generic function calls for all other needs](#other-needs).
 
 ## ExUnit assertions
 
@@ -77,7 +77,7 @@ If you have static HTML, CSS, or SVG files in your project, you might want to va
 - `mix vnu.validate.html`
 - `mix vnu.validate.css`
 - `mix vnu.validate.svg`
-- 
+
 ### Example
 
 ```bash
