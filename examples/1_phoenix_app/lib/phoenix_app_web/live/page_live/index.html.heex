@@ -1,0 +1,32 @@
+<.link patch={~p"/live/valid"} id="link-valid">
+  Valid HTML
+</.link>
+
+<.link patch={~p"/live/invalid"} id="link-invalid">
+  Invalid HTML
+</.link>
+
+<article>
+  <h1>Angelika's Star Trek series ranking</h1>
+  <ol>
+    <%= for star_trek <- @star_treks do %>
+      <li id={star_trek.id}>
+        <%= star_trek.title %>
+        <%= if star_trek.id == "orv" do %>
+          <sup><a href="#orville-explanation">[1]</a></sup>
+        <% end %>
+      </li>
+    <% end %>
+
+    <span :if={@live_action == :invalid} id="ds9">
+      Star Trek: Deep Space Nine
+    </span>
+  </ol>
+
+  <p id="#orville-explanation">
+    [1] While I am aware that The Orville is not technically part of the Star Trek universe,
+    it is better at capturing what makes Star Trek <em>Star Trek</em>
+    and telling interesting stories
+    than the most recent attempts at rebooting the series, Discovery and Picard.
+  </p>
+</article>

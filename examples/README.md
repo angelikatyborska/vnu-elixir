@@ -12,6 +12,10 @@ Run `mix test` to see the tests failing for invalid HTML and CSS documents.
 
 ![](../assets/controller_test.png)
 
+### LiveView tests
+
+Take a look at the files [`conn_case.ex`](1_phoenix_app/test/support/conn_case.ex) and [`page_live_test.exs`](1_phoenix_app/test/phoenix_app_web/live/page_live_test.exs) to see the usage of assertions in LiveView tests.
+
 ### Mix task
 
 Run `mix vnu.validate.css --server-url http://localhost:8888 assets/**/*.css` to test the mix task.

@@ -52,7 +52,7 @@ defmodule PhoenixAppWeb.PageControllerTest do
     html_response =
       conn
       |> html_response(200)
-      |> assert_valid_html(fail_on_warnings: false)
+      |> assert_valid_html()
 
     assert html_response =~ "Peace of mind from prototype to production"
   end
@@ -61,10 +61,40 @@ end
 
 ![](https://raw.github.com/angelikatyborska/vnu-elixir/main/assets/controller_test.png)
 
-
 #### LiveView tests
 
-TODO: add to example phoenix app and describe
+The LiveView test function `Phoenix.LiveViewTest.html#live/2` returns the view's HTML without a doctype. This makes it necessary to create another helper function that will prepend the right doctype to the HTML before sending it to the validator.
+
+```elixir
+defmodule PhoenixAppWeb.ConnCase do
+  use ExUnit.CaseTemplate
+
+  using do
+    quote do
+      # ...
+      def assert_valid_live_html(html, vnu_opts \\ []) do
+        assert_valid_html("<!DOCTYPE html>\n#{html}", vnu_opts)
+      end
+    end
+  end
+end
+```
+
+```elixir
+test "/live disconnected and connected mount", %{conn: conn} do
+  conn = get(conn, ~p"/live")
+  
+  conn
+  |> html_response(200)
+  |> assert_valid_html()
+  
+  {:ok, _index_live, html} = live(conn)
+  
+  assert_valid_live_html(html)
+end
+```
+
+At the moment, LiveView does not offer a public API to get the updated full page HTML after the initial render. This makes it impossible to assert whether the HTML is still valid after updates because [the Nu HTML Checker (v.Nu)](https://validator.w3.org/nu/) doesn't offer validating HTML fragments, only full documents.
 
 #### Hound integration tests
 
