@@ -47,7 +47,7 @@ Add Vnu as a dependency to your project's `mix.exs`. To use the built-in, Hackne
 defp deps do
   [
     {:vnu, "~> 1.1", only: [:dev, :test], runtime: false},
-    {:hackney, "~> 1.17"}
+    {:hackney, "~> 1.18"}
   ]
 end
 ```
