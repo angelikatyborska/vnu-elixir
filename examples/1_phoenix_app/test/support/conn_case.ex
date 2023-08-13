@@ -32,6 +32,7 @@ defmodule PhoenixAppWeb.ConnCase do
       def assert_valid_html(html, vnu_opts \\ []) do
         default_vnu_opts = [
           server_url: Application.get_env(:phoenix_app, :vnu_server_url),
+          filter: PhoenixAppWeb.VnuHTMLMessageFilter,
           fail_on_warnings: true
         ]
 

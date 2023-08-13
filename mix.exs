@@ -76,6 +76,7 @@ defmodule Vnu.MixProject do
   defp docs do
     [
       main: "overview",
+      assets: "assets",
       extras: [
         "guides/overview.md",
         "guides/installation.md",

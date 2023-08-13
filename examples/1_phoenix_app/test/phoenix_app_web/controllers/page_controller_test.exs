@@ -7,10 +7,7 @@ defmodule PhoenixAppWeb.PageControllerTest do
     html_response =
       conn
       |> html_response(200)
-      |> assert_valid_html(
-        fail_on_warnings: false,
-        filter: PhoenixAppWeb.VnuHTMLMessageFilter
-      )
+      |> assert_valid_html(fail_on_warnings: false)
 
     assert html_response =~ "Peace of mind from prototype to production"
   end

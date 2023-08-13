@@ -8,7 +8,7 @@ Take a look at file `1_phoenix_app/test/phoenix_app_web/controllers/page_control
 
 Run `mix test` to see the tests failing for invalid HTML and CSS documents.
 
-![](1_phoenix_app_failing_test.png)
+![](../assets/controller_test.png)
 
 You can change the Checker server URL in `1_phoenix_app/config/test.exs`:
    
@@ -18,4 +18,4 @@ You can change the Checker server URL in `1_phoenix_app/config/test.exs`:
 
 Run `mix vnu.validate.css --server-url http://localhost:8888 assets/**/*.css` to test the mix task.
 
-![](1_phoenix_app_failing_mix_task.png)
+![](../assets/mix_task.png)
