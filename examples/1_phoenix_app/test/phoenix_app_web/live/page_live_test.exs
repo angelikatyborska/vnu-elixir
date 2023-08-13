@@ -12,7 +12,7 @@ defmodule PhoenixAppWeb.PageLiveTest do
 
     {:ok, _index_live, html} = live(conn)
 
-    assert_valid_live_html(html)
+    assert_valid_html_without_doctype(html)
   end
 
   test "/invalid disconnected and connected mount", %{conn: conn} do
@@ -24,7 +24,7 @@ defmodule PhoenixAppWeb.PageLiveTest do
 
     {:ok, index_live, html} = live(conn)
 
-    assert_valid_live_html(html)
+    assert_valid_html_without_doctype(html)
 
     # assert index_live |> element("#link-invalid") |> render_click()
     # at the moment, there's no public API to give us the full page HTML after the update

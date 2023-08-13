@@ -39,7 +39,7 @@ defmodule PhoenixAppWeb.ConnCase do
         Vnu.Assertions.assert_valid_html(html, Keyword.merge(default_vnu_opts, vnu_opts))
       end
 
-      def assert_valid_live_html(html, vnu_opts \\ []) do
+      def assert_valid_html_without_doctype(html, vnu_opts \\ []) do
         assert_valid_html("<!DOCTYPE html>\n#{html}", vnu_opts)
       end
     end

@@ -72,7 +72,7 @@ defmodule PhoenixAppWeb.ConnCase do
   using do
     quote do
       # ...
-      def assert_valid_live_html(html, vnu_opts \\ []) do
+      def assert_valid_html_without_doctype(html, vnu_opts \\ []) do
         assert_valid_html("<!DOCTYPE html>\n#{html}", vnu_opts)
       end
     end
@@ -90,7 +90,7 @@ test "/live disconnected and connected mount", %{conn: conn} do
   
   {:ok, _index_live, html} = live(conn)
   
-  assert_valid_live_html(html)
+  assert_valid_html_without_doctype(html)
 end
 ```
 
@@ -98,7 +98,11 @@ At the moment, LiveView does not offer a public API to get the updated full page
 
 #### Hound integration tests
 
-TODO: add to example phoenix app and describe
+If you're using [Hound](https://hexdocs.pm/hound/) for your integration tests, you can call [`page_source`](https://hexdocs.pm/hound/Hound.Helpers.Page.html#page_source/0) and use HTML validations in our integration tests too.
+
+```elixir
+assert_valid_html_without_doctype(page_source())
+```
 
 ## Mix tasks
 
