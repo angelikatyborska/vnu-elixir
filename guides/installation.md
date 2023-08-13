@@ -36,11 +36,10 @@ defp deps do
 end
 ```
 
-TODO: describe what to do when you don't want to use hackney.
-
 And run:
 
 ```bash
 $ mix deps.get
 ```
 
+If you don't want to use Hackney, you can implement your own HTTP client module using the `Vnu.HTTPClient` behavior and pass it in the `http_client` option.
