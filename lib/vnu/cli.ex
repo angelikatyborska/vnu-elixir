@@ -50,7 +50,7 @@ defmodule Vnu.CLI do
     {validate_function, pretty_name} = format_to_function_and_pretty_name(format)
 
     Mix.shell().info("\nValidating #{pretty_name} files:")
-    file_list = Enum.join(Enum.map(files, &"  - #{&1}"), "\n")
+    file_list = Enum.map_join(files, "\n", &"  - #{&1}")
     Mix.shell().info(file_list <> "\n")
 
     Application.ensure_all_started(:hackney)
@@ -158,7 +158,7 @@ defmodule Vnu.CLI do
   def summary(results) do
     summary =
       results
-      |> Enum.map(fn {file, counts} ->
+      |> Enum.map_join("\n", fn {file, counts} ->
         summary = Formatter.format_counts(counts, exclude_zeros: true)
 
         summary =
@@ -170,7 +170,6 @@ defmodule Vnu.CLI do
 
         "  - #{file}: #{summary}"
       end)
-      |> Enum.join("\n")
 
     "Summary:\n" <> summary
   end

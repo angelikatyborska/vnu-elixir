@@ -225,6 +225,7 @@ defmodule Vnu.Formatter do
             "#{left_padding}#{if location, do: String.duplicate(" ", String.length(location))}#{hilite}"
 
         [extract] ->
+          # credo:disable-for-next-line Credo.Check.Refactor.Nesting
           "#{left_padding}#{if location, do: with_color(location, label_color())}#{extract}"
 
         nil ->
