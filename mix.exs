@@ -31,7 +31,11 @@ defmodule Vnu.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [
+        :logger,
+        # adding hackney here is necessary for Elixir 1.14 or lower
+        :hackney
+      ]
     ]
   end
 
