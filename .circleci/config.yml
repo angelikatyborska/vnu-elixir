@@ -1,6 +1,13 @@
 version: 2.1
 
 executors:
+  elixir-16:
+    docker:
+      - image: cimg/elixir:1.16
+      - image: ghcr.io/validator/validator:latest
+    environment:
+      VNU_SERVER_URL: http://localhost:8888/
+
   elixir-15:
     docker:
       - image: cimg/elixir:1.15
@@ -58,14 +65,21 @@ commands:
       - run: mix test
 
 jobs:
-  test-elixir-15:
-    executor: elixir-15
+  test-elixir-16:
+    executor: elixir-16
     working_directory: ~/repo
     steps:
       - checkout
       - check_formatted
       - test
       - run: mix coveralls.circle
+
+  test-elixir-15:
+    executor: elixir-15
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - test
 
   test-elixir-14:
     executor: elixir-14
@@ -106,19 +120,22 @@ workflows:
   version: 2
   test:
     jobs:
-      - test-elixir-15
+      - test-elixir-16
+      - test-elixir-15:
+          requires:
+            - test-elixir-16
       - test-elixir-14:
           requires:
-            - test-elixir-15
+            - test-elixir-16
       - test-elixir-13:
           requires:
-            - test-elixir-15
+            - test-elixir-16
       - test-elixir-12:
           requires:
-            - test-elixir-15
+            - test-elixir-16
       - test-elixir-11:
           requires:
-            - test-elixir-15
+            - test-elixir-16
       - test-elixir-10:
           requires:
-            - test-elixir-15
+            - test-elixir-16
