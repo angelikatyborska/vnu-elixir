@@ -17,6 +17,8 @@ jobs:
           - 8888:8888
     env:
       VNU_SERVER_URL: http://localhost:8888/
+      MIX_ENV: test
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
