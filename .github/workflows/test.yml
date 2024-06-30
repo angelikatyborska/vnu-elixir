@@ -34,7 +34,7 @@ jobs:
           - elixir: '1.16.0'
             otp: '26.2'
             current_version: true
-          - elixir: '1.17.0'
+          - elixir: '1.17.1'
             otp: '27.0'
             current_version: true
             upload_coveralls: true
