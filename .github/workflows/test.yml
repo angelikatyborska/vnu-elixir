@@ -36,6 +36,7 @@ jobs:
           - elixir: '1.17.0'
             otp: '27.0'
             current_version: true
+            upload_coveralls: true
 
     steps:
       - name: Checkout code
@@ -89,6 +90,7 @@ jobs:
 
       - name: Coveralls
         run: mix coveralls.github
+        if: ${{ matrix.upload_coveralls }}
 
       - name: Check for compilation warnings
         run: mix compile --force --no-warnings
