@@ -1,6 +1,6 @@
 # Vnu
 
-[![angelikatyborska](https://circleci.com/gh/angelikatyborska/vnu-elixir.svg?style=shield)](https://circleci.com/gh/angelikatyborska/vnu-elixir)
+![GitHub Workflow status](https://github.com/angelikatyborska/vnu-elixir/actions/workflows/test.yml/badge.svg)
 ![Hex.pm](https://img.shields.io/hexpm/v/vnu)
 ![Hex.pm](https://img.shields.io/hexpm/dt/vnu)
 ![Hex.pm](https://img.shields.io/hexpm/l/vnu)
