@@ -23,7 +23,7 @@ defmodule Vnu.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test,
-        "coveralls.circle": :test
+        "coveralls.github": :test
       ]
     ]
   end
