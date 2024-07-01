@@ -57,8 +57,8 @@ defmodule Vnu.CLI do
 
     results =
       Enum.map(files, fn file ->
-        with {:file, {:ok, document}} <- {:file, File.read(file)},
-             {:validation, {:ok, result}} <- {:validation, validate_function.(document, opts)} do
+        with {:ok, document} <- read_file(file),
+             {:ok, result} <- validate_document(file, document, opts, validate_function) do
           messages =
             result.messages
             |> Vnu.Formatter.sort()
@@ -80,12 +80,6 @@ defmodule Vnu.CLI do
 
           {file,
            %{error_count: error_count, warning_count: warning_count, info_count: info_count}}
-        else
-          {:file, {:error, error}} ->
-            Mix.raise("File #{file} could not be read:\n  #{inspect(error)}")
-
-          {:validation, {:error, error}} ->
-            Mix.raise("Could not finish validating #{file}:\n  #{inspect(error)}")
         end
       end)
 
@@ -95,6 +89,26 @@ defmodule Vnu.CLI do
     }
 
     handle_total_counts(results, total_counts, fail_on_warnings?)
+  end
+
+  defp read_file(file) do
+    case File.read(file) do
+      {:ok, content} ->
+        {:ok, content}
+
+      {:error, error} ->
+        Mix.raise("File #{file} could not be read:\n  #{inspect(error)}")
+    end
+  end
+
+  defp validate_document(file, document, opts, validate_function) do
+    case validate_function.(document, opts) do
+      {:ok, result} ->
+        {:ok, result}
+
+      {:error, error} ->
+        Mix.raise("Could not finish validating #{file}:\n  #{inspect(error)}")
+    end
   end
 
   @doc false
