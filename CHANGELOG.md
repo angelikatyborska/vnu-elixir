@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Handle new `:connect_error` from hackney 1.22
+
 ## 1.1.1 (2023-08-13)
 
 - Fix error in error message (sic) when hackney is missing

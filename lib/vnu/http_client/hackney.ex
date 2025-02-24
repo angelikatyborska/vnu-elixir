@@ -16,6 +16,9 @@ defmodule Vnu.HTTPClient.Hackney do
       else
         {:error, error} ->
           {:error, error}
+
+        {:connect_error, {:error, error}} ->
+          {:error, error}
       end
     else
       Logger.error("""
