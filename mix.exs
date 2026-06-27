@@ -17,13 +17,13 @@ defmodule Vnu.MixProject do
       package: package(),
       name: "Vnu",
       source_url: "https://github.com/angelikatyborska/vnu-elixir/",
-      test_coverage: [tool: ExCoveralls],
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
   def cli do
     [
-      preferred_envs:  [
+      preferred_envs: [
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
