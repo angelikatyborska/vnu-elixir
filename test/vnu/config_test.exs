@@ -43,6 +43,16 @@ defmodule Vnu.ConfigTest do
       assert config.server_url == "http://localhost:1234/"
     end
 
+    test "does not add a second trailing slash to server_url" do
+      {:ok, config} = Config.new(server_url: "http://localhost:1234/")
+      assert config.server_url == "http://localhost:1234/"
+    end
+
+    test "does not add a trailing slash to server_url if would not be valid" do
+      {:ok, config} = Config.new(server_url: "http://localhost:1234/?x=2")
+      assert config.server_url == "http://localhost:1234/?x=2"
+    end
+
     test "server_url must be a string" do
       {:error, %Error{} = error} = Config.new(server_url: 1)
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Dropping support for Elixir 1.14.
+- Fix crash when `server_url` contains query params.
+
 ## 1.1.1 (2023-08-13)
 
 - Fix error in error message (sic) when hackney is missing

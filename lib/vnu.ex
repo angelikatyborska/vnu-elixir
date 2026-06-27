@@ -131,24 +131,25 @@ defmodule Vnu do
       iex> Vnu.validate_svg(~S(
       ...><svg width="5cm" height="4cm" version="1.1" xmlns="http://www.w3.org/2000/svg">
       ...><desc>Rectangle</desc>
-      ...><rect x="0.5cm" y="0.5cm" height="1cm"/>
+      ...><rect x="0.5cm" x="0.5cm" y="0.5cm" height="1cm"/>
       ...></svg>
       ...> ), server_url: System.get_env("VNU_SERVER_URL") || "http://localhost:8888")
       {:ok, %Vnu.Result{messages: [
         %Vnu.Message{
           type: :info,
-          message: "Using the preset for SVG 1.1 + URL + HTML + MathML 3.0 based on the root namespace."
+          message: "Using the preset for SVG + URL + HTML + MathML based on the root namespace."
         },
         %Vnu.Message{
           type: :error,
-          message: "SVG element “rect” is missing required attribute “width”.",
-          extract: "le</desc>\n<rect x=\"0.5cm\" y=\"0.5cm\" height=\"1cm\"/>\n</svg",
+          sub_type: :fatal,
+          message: "duplicate attribute (found “x”)",
+          extract: "0.5cm\" x=\"0.5cm\" y=\"0.5cm\" hei",
           first_line: 4,
           last_line: 4,
-          first_column: 1,
-          last_column: 40,
-          hilite_length: 40,
-          hilite_start: 10,
+          first_column: nil,
+          last_column: 25,
+          hilite_length: 1,
+          hilite_start: 15,
         }
       ]}}
 

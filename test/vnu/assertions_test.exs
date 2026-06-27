@@ -195,9 +195,8 @@ defmodule Vnu.AssertionsTest do
       svg = """
       <svg width="5cm" height="4cm" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <desc>Rectangle</desc>
-      <rect x="0.5cm" y="0.5cm" height="1cm"/>
-      <rect x="3cm" y="5cm" width="1cm"/>
-      <rect x="10cm" y="10cm" />
+      <rect x="0.5cm" y="0.5cm" y="1cm" height="1cm"/>
+      <rect x="10cm" x="10cm" />
       </svg>
       """
 
@@ -209,8 +208,9 @@ defmodule Vnu.AssertionsTest do
         raise "this line should not be reached"
       rescue
         error in [ExUnit.AssertionError] ->
+          # There are multiple parsing errors in the document, but the validator exits after encountering the first one.
           assert error.message ==
-                   "Expected the SVG document to be valid, but got 4 errors\n\n#{Formatter.format_messages(messages) |> Enum.join("\n\n")}\n"
+                   "Expected the SVG document to be valid, but got 1 error\n\n#{Formatter.format_messages(messages) |> Enum.join("\n\n")}\n"
 
         e ->
           reraise e, __STACKTRACE__
