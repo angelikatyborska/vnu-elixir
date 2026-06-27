@@ -60,7 +60,12 @@ defmodule Vnu.Config do
     server_url = Keyword.get(opts, :server_url)
 
     if is_bitstring(server_url) do
-      server_url = if String.ends_with?(server_url, "/"), do: server_url, else: server_url <> "/"
+      server_url =
+        server_url
+        |> URI.parse()
+        |> URI.append_path("/")
+        |> URI.to_string()
+
       {:ok, %{config | server_url: server_url}}
     else
       {:error,

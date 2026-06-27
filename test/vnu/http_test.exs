@@ -20,6 +20,18 @@ defmodule Vnu.HTTPTest do
         HTTP.get_result("", Config.new!(server_url: "http://localhost:#{bypass.port}"))
     end
 
+    test "handles server_urls with query params", %{bypass: bypass} do
+      Bypass.expect(bypass, fn conn ->
+        conn = Plug.Conn.fetch_query_params(conn)
+        assert Plug.Conn.get_req_header(conn, "content-type") == ["text/html; charset=utf-8"]
+        assert conn.query_params == %{"q" => "7", "out" => "json"}
+        Plug.Conn.resp(conn, 200, "{}")
+      end)
+
+      {:ok, %Result{}} =
+        HTTP.get_result("", Config.new!(server_url: "http://localhost:#{bypass.port}?q=7"))
+    end
+
     test "sets content-type for css", %{bypass: bypass} do
       Bypass.expect(bypass, fn conn ->
         assert Plug.Conn.get_req_header(conn, "content-type") == ["text/css; charset=utf-8"]
