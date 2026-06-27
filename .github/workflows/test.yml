@@ -22,15 +22,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - elixir: '1.14.0'
-            otp: '25.0'
-            current_version: false
           - elixir: '1.15.0'
             otp: '26.0'
-            current_version: true
+            current_version: false
           - elixir: '1.16.0'
             otp: '26.2'
-            current_version: true
+            current_version: false
           - elixir: '1.17.1'
             otp: '27.0'
             current_version: true

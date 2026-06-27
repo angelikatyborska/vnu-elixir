@@ -5,7 +5,7 @@ defmodule Vnu.MixProject do
     [
       app: :vnu,
       version: "1.1.1",
-      elixir: "~> 1.8",
+      elixir: "~> 1.15",
       lockfile: "mix.lock",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),

@@ -1,7 +1,8 @@
 # Changelog
 
-## 1.1.2 (2026-06-27)
+## Unreleased
 
+- Dropping support for Elixir 1.14.
 - Fix crash when `server_url` contains query params.
 
 ## 1.1.1 (2023-08-13)
