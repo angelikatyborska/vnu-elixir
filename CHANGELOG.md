@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Remove the built-in `Vnu.HTTPClient.Hackney` HTTP client adapter and replace it with `Vnu.HTTPClient.Httpc` as the default.
+  - Note: If you're configuring a `https://` VNU `server_url`, be aware that the new adapter relies on `:httpc`'s built-in secure TLS defaults (peer certificate verification against the OS trust store, hostname checking), which were added in **Erlang/OTP 26+**.
+- Remove the `:hackney` mix dependency
+
 ## 1.2.0 (2026-06-27)
 
 - Dropping support for Elixir 1.14.

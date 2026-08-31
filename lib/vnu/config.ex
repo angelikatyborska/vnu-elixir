@@ -6,7 +6,7 @@ defmodule Vnu.Config do
   defstruct [:http_client, :server_url, :format, :filter]
 
   @defaults [
-    http_client: Vnu.HTTPClient.Hackney,
+    http_client: Vnu.HTTPClient.Httpc,
     server_url: "http://localhost:8888",
     format: :html,
     filter: nil

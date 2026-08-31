@@ -12,7 +12,7 @@ defmodule Vnu.MixProject do
       deps: deps(),
       aliases: aliases(),
       docs: docs(),
-      dialyzer: [plt_add_apps: [:mix, :ex_unit, :hackney]],
+      dialyzer: [plt_add_apps: [:mix, :ex_unit]],
       description: description(),
       package: package(),
       name: "Vnu",
@@ -36,11 +36,7 @@ defmodule Vnu.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [
-        :logger,
-        # adding hackney here is necessary for Elixir 1.14 or lower
-        :hackney
-      ]
+      extra_applications: [:logger, :inets, :ssl]
     ]
   end
 
@@ -51,7 +47,6 @@ defmodule Vnu.MixProject do
   defp deps do
     [
       {:jason, "~> 1.0"},
-      {:hackney, "~> 1.18", optional: true},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.21", only: [:dev], runtime: false},
