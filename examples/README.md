@@ -22,6 +22,6 @@ Run `mix vnu.validate.css --server-url http://localhost:8888 assets/**/*.css` to
 
 ![](../assets/mix_task.png)
 
-## 2. Phoenix app with Mint instead of Hackney
+## 2. Phoenix app with Mint instead of `:httpc`
 
-Take a look at the file [`vnu_mint_client.ex`](2_phoenix_app_mint/test/support/vnu_mint_client.ex) to see an example implementation of a custom HTTP client, in this case using [Mint](https://github.com/elixir-mint/mint) instead of Hackney.
+Take a look at the file [`vnu_mint_client.ex`](2_phoenix_app_mint/test/support/vnu_mint_client.ex) to see an example implementation of a custom HTTP client, in this case using [Mint](https://github.com/elixir-mint/mint) instead of `:httpc`.
