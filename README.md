@@ -48,7 +48,7 @@ Add Vnu as a dependency to your project's `mix.exs`.
 ```elixir
 defp deps do
   [
-    {:vnu, "~> 1.2", only: [:dev, :test]}
+    {:vnu, "~> 2.0", only: [:dev, :test]}
   ]
 end
 ```
