@@ -2,6 +2,8 @@
 
 ## Prerequisites
 
+This library requires Elixir 1.15+ and Erlang/OTP 26+.
+
 While it is possible to use this library with the service run by W3C at [validator.w3.org/nu](https://validator.w3.org/nu/),
 I would recommend running your own instance. You will eliminate a lot of network latency if it runs on the same machine as your code, and you will not hit any rate limits that might exist for [validator.w3.org/nu](https://validator.w3.org/nu/).
 
@@ -25,13 +27,12 @@ HTTP/1.1 200 OK
 
 Make sure to read about the [prerequisites](#prerequisites) first.
 
-Add Vnu as a dependency to your project's `mix.exs`. To use the built-in, Hackney-based HTTP client adapter, also add `:hackney`:
+Add Vnu as a dependency to your project's `mix.exs`.
 
 ```elixir
 defp deps do
   [
-    {:vnu, "~> 1.1", only: [:dev, :test], runtime: false},
-    {:hackney, "~> 1.18"}
+    {:vnu, "~> 1.2", only: [:dev, :test]}
   ]
 end
 ```
@@ -42,4 +43,4 @@ And run:
 $ mix deps.get
 ```
 
-If you don't want to use Hackney, you can implement your own HTTP client module using the `Vnu.HTTPClient` behavior and pass it in the `http_client` option.
+The built-in HTTP client adapter uses `:httpc`, which ships with Erlang/OTP. If you don't want to use `:httpc`, you can implement your own HTTP client module using the [`Vnu.HTTPClient` behavior](lib/vnu/http_client.ex) and pass it in the `http_client` option.

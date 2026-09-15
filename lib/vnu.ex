@@ -16,7 +16,7 @@ defmodule Vnu do
   - `:filter` - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
   Defaults to `nil` (no excluded messages).
   - `:http_client` - A module implementing the `Vnu.HTTPClient` behaviour that will be used to make the HTTP request to the server.
-  Defaults to `Vnu.HTTPClient.Hackney`.
+  Defaults to `Vnu.HTTPClient.Httpc`.
 
 
   ## Examples
@@ -60,7 +60,7 @@ defmodule Vnu do
       iex> Vnu.validate_html("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: :nxdomain"
+        message: "Could not contact the server, got error: {:failed_connect, [{:to_address, {~c\"wrong-domain\", 80}}, {:inet, [:inet], :nxdomain}]}"
       }}
   """
 
@@ -103,7 +103,7 @@ defmodule Vnu do
       iex> Vnu.validate_css("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: :nxdomain"
+        message: "Could not contact the server, got error: {:failed_connect, [{:to_address, {~c\"wrong-domain\", 80}}, {:inet, [:inet], :nxdomain}]}"
       }}
   """
 
@@ -156,7 +156,7 @@ defmodule Vnu do
       iex> Vnu.validate_svg("", server_url: "http://wrong-domain")
       {:error, %Vnu.Error{
         reason: :unexpected_server_response,
-        message: "Could not contact the server, got error: :nxdomain"
+        message: "Could not contact the server, got error: {:failed_connect, [{:to_address, {~c\"wrong-domain\", 80}}, {:inet, [:inet], :nxdomain}]}"
       }}
   """
 
@@ -182,7 +182,7 @@ defmodule Vnu do
   - `:fail_on_warnings` - Messages of type `:info` and subtype `:warning` will be treated as if they were validation errors.
     Their presence will mean the document is invalid. Defaults to `false`.
   - `:http_client` - A module implementing the `Vnu.HTTPClient` behaviour that will be used to make the HTTP request to the server.
-  Defaults to `Vnu.HTTPClient.Hackney`.
+  Defaults to `Vnu.HTTPClient.Httpc`.
 
   ## Examples
 

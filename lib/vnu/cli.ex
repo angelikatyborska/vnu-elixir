@@ -53,8 +53,6 @@ defmodule Vnu.CLI do
     file_list = Enum.map_join(files, "\n", &"  - #{&1}")
     Mix.shell().info(file_list <> "\n")
 
-    Application.ensure_all_started(:hackney)
-
     results =
       Enum.map(files, fn file ->
         with {:ok, document} <- read_file(file),

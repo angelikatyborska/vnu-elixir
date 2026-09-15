@@ -14,7 +14,7 @@ defmodule Vnu.Assertions do
   - `:filter` - A module implementing the `Vnu.MessageFilter` behavior that will be used to exclude messages matching the filter from the result.
     Defaults to `nil` (no excluded messages).
   - `:http_client` - A module implementing the `Vnu.HTTPClient` behaviour that will be used to make the HTTP request to the server.
-    Defaults to `Vnu.HTTPClient.Hackney`.
+    Defaults to `Vnu.HTTPClient.Httpc`.
   - `:message_print_limit` - The maximum number of validation messages that will me printed in the error when the assertion fails.
     Can be an integer or `:infinity`. Defaults to `:infinity`.
   """

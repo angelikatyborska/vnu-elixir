@@ -7,7 +7,7 @@ defmodule Vnu.ConfigTest do
       {:ok, config} = Config.new([])
 
       assert config == %Config{
-               http_client: Vnu.HTTPClient.Hackney,
+               http_client: Vnu.HTTPClient.Httpc,
                server_url: "http://localhost:8888/",
                format: :html
              }
