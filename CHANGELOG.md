@@ -2,9 +2,28 @@
 
 ## Unreleased
 
+### Breaking changes
+
+- Require Erlang/OTP 26 or newer.
 - Remove the built-in `Vnu.HTTPClient.Hackney` HTTP client adapter and replace it with `Vnu.HTTPClient.Httpc` as the default.
   - Note: If you're configuring a `https://` VNU `server_url`, be aware that the new adapter relies on `:httpc`'s built-in secure TLS defaults (peer certificate verification against the OS trust store, hostname checking), which were added in **Erlang/OTP 26+**.
-- Remove the `:hackney` mix dependency
+
+### Upgrade instructions
+
+1. Make sure your project runs on Erlang/OTP 26 or newer.
+2. In `mix.exs`, remove `runtime: false` from the `:vnu` dependency.
+
+   ```elixir
+   # before
+   {:vnu, "~> 1.2", only: [:dev, :test], runtime: false}
+   # after
+   {:vnu, "~> 2.0", only: [:dev, :test]}
+   ```
+
+  This, in combination with `vnu-elixir`'s `extra_applications` setting in `mix.exs`, ensures that the `:inets` and `:ssl` applications are available for the default HTTP client adapter.
+
+3. (optional) If your project doesn't use `hackney`, also remove the `{:hackney, ...}` dependency from `mix.exs` and run `mix deps.unlock --unused`.
+4. (optional) If you explicitly set the `http_client: Vnu.HTTPClient.Hackney` config option, remove it or update to use the new `Vnu.HTTPClient.Httpc` default.
 
 ## 1.2.0 (2026-06-27)
 

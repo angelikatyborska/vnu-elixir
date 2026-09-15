@@ -2,6 +2,8 @@
 
 ## Prerequisites
 
+This library requires Elixir 1.15+ and Erlang/OTP 26+.
+
 While it is possible to use this library with the service run by W3C at [validator.w3.org/nu](https://validator.w3.org/nu/),
 I would recommend running your own instance. You will eliminate a lot of network latency if it runs on the same machine as your code, and you will not hit any rate limits that might exist for [validator.w3.org/nu](https://validator.w3.org/nu/).
 
