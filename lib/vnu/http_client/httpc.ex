@@ -12,11 +12,6 @@ defmodule Vnu.HTTPClient.Httpc do
 
   @impl true
   def post(url, body, headers) do
-    # despite listing `:inets` and `:ssl` in `extra_applications`,
-    # they may not be started when the vnu dependency is added with `runtime: false`
-    Application.ensure_all_started(:inets)
-    Application.ensure_all_started(:ssl)
-
     {content_type, headers} = pop_content_type(headers)
 
     headers = Enum.map(headers, fn {key, value} -> {String.to_charlist(key), value} end)
